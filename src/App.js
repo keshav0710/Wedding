@@ -789,7 +789,7 @@ const WeddingInvitation = () => {
   const [currentSlide,  setCurrentSlide]  = useState(0);
   const [touchStart,    setTouchStart]    = useState(0);
   const [lightbox,      setLightbox]      = useState(null);
-  const slides = ['cover','gallery','celebrations',...WD.functions.map(f=>f.id),'venue','family','rsvp'];
+  const slides = React.useMemo(() => ['cover','gallery','celebrations',...WD.functions.map(f=>f.id),'venue','family','rsvp'], []);
   const total  = slides.length;
 
   const handleEnter = () => { setIsExiting(true); setTimeout(()=>setShowSplash(false),900); };
