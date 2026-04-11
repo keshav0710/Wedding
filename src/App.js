@@ -276,7 +276,7 @@ const MiniAudioPlayer = ({ song, accent, isActive }) => {
 
       {error && (
         <p style={{ fontSize: 9, color: 'rgba(255,160,100,0.8)', marginTop: 5, textAlign: 'center', letterSpacing: '0.05em' }}>
-          ⚠ Add <code style={{ fontSize: 8 }}>/songs/{song.url.split('/').pop()}</code> to enable audio
+          ⚠ {errDetail || `Failed to load ${song.url.split('/').pop()}`}
         </p>
       )}
     </div>
