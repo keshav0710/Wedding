@@ -29,7 +29,7 @@ const WD = {
       tagline: 'Golden moments with golden turmeric',
       image: '/images/haldi.png',
       palette: { from: '#2A1D00', via: '#3F2C00', accent: '#D4A853', light: '#FFF8E7' },
-      song: { title: 'Haldi Wale Haath', artist: 'Neha Kakkar', url: '/songs/haldi.mp3' },
+      song: { title: 'London Thumakda', artist: 'Neha Kakkar', url: '/songs/haldi.mp3' },
       dress: { color: '#D4A853', swatch2: '#FFF8E7', label: 'Soft Gold & Ivory', tip: 'Soft gold, ivory, saffron & marigold hues. Silk kurtas, lehengas preferred. Avoid blacks!' },
       particles: { chars: ['✦', '·', '◆', '✿', '•'], colors: ['#D4A853', '#F0D070', '#FFF8E7', '#C9A96E'] },
     },
