@@ -213,10 +213,23 @@ const MiniAudioPlayer = ({ song, accent, isActive }) => {
 
   useEffect(() => { if (!isActive && audioRef.current) { audioRef.current.pause(); setPlaying(false); } }, [isActive]);
 
-  const toggle = () => {
+  const toggle = async () => {
     const a = audioRef.current; if (!a) return;
-    if (playing) { a.pause(); setPlaying(false); }
-    else { setError(false); setErrDetail(''); a.play().catch((e) => { setError(true); setErrDetail('Play blocked: ' + e.message); }); setPlaying(true); }
+    if (playing) { 
+      a.pause(); 
+      setPlaying(false); 
+    } else { 
+      setError(false); 
+      setErrDetail(''); 
+      try {
+        setPlaying(true); // Optimistic UI
+        await a.play();
+      } catch (e) {
+        setPlaying(false);
+        setError(true); 
+        setErrDetail('Play blocked: ' + e.message); 
+      }
+    }
   };
 
   const fmt = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
