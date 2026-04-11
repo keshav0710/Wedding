@@ -229,7 +229,7 @@ const MiniAudioPlayer = ({ song, accent, isActive }) => {
 
   return (
     <div style={{ background: 'rgba(0,0,0,0.48)', backdropFilter: 'blur(18px)', borderRadius: 14, padding: '10px 14px', border: `1px solid ${accent}35` }}>
-      <audio ref={audioRef} src={song.url}
+      <audio key={song.url} ref={audioRef} src={song.url}
         onTimeUpdate={e => setProgress(e.target.currentTime)}
         onLoadedMetadata={e => setDuration(e.target.duration)}
         onError={(e) => { setError(true); setPlaying(false); setErrDetail('Network/Load Error code: ' + (e.target.error?.code || 'unknown')); }}
