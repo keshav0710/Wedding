@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { ChevronRight, ChevronLeft, MapPin, Phone, MessageCircle, X, Heart, Play, Pause, Music } from 'lucide-react';
 
-/* Static photo paths — files live in public/photos/ */
-const COUPLE_PHOTO  = '/photos/couple.jpeg';
-const GALLERY_PATHS = Array.from({length:37}, (_,i) => `/photos/gallery-${i+1}.jpeg`);
+import { getImageUrl } from './supabase';
+
+/* Dynamic photo paths — pulled directly from Supabase Cloud Storage */
+const COUPLE_PHOTO  = getImageUrl('photos/couple.jpeg');
+const GALLERY_PATHS = Array.from({length:37}, (_,i) => getImageUrl(`photos/gallery-${i+1}.jpeg`));
 
 /* ═══════════════ COLOUR TOKENS ═══════════════════════════════════════════ */
 const C = {
