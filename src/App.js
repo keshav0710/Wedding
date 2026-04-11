@@ -209,13 +209,14 @@ const MiniAudioPlayer = ({ song, accent, isActive }) => {
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const [error, setError] = useState(false);
+  const [errDetail, setErrDetail] = useState('');
 
   useEffect(() => { if (!isActive && audioRef.current) { audioRef.current.pause(); setPlaying(false); } }, [isActive]);
 
   const toggle = () => {
     const a = audioRef.current; if (!a) return;
     if (playing) { a.pause(); setPlaying(false); }
-    else { setError(false); a.play().catch(() => setError(true)); setPlaying(true); }
+    else { setError(false); setErrDetail(''); a.play().catch((e) => { setError(true); setErrDetail('Play blocked: ' + e.message); }); setPlaying(true); }
   };
 
   const fmt = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
@@ -231,7 +232,7 @@ const MiniAudioPlayer = ({ song, accent, isActive }) => {
       <audio ref={audioRef} src={song.url}
         onTimeUpdate={e => setProgress(e.target.currentTime)}
         onLoadedMetadata={e => setDuration(e.target.duration)}
-        onError={() => { setError(true); setPlaying(false); }}
+        onError={(e) => { setError(true); setPlaying(false); setErrDetail('Network/Load Error code: ' + (e.target.error?.code || 'unknown')); }}
       />
 
       {/* Row 1 */}
@@ -273,7 +274,7 @@ const MiniAudioPlayer = ({ song, accent, isActive }) => {
 
       {error && (
         <p style={{ fontSize: 9, color: 'rgba(255,160,100,0.8)', marginTop: 5, textAlign: 'center', letterSpacing: '0.05em' }}>
-          ⚠ Add <code style={{ fontSize: 8 }}>/songs/{song.url.split('/').pop()}</code> to enable audio
+          ⚠ {errDetail || `Failed to load ${song.url.split('/').pop()}`}
         </p>
       )}
     </div>
