@@ -229,11 +229,13 @@ const MiniAudioPlayer = ({ song, accent, isActive }) => {
 
   return (
     <div style={{ background: 'rgba(0,0,0,0.48)', backdropFilter: 'blur(18px)', borderRadius: 14, padding: '10px 14px', border: `1px solid ${accent}35` }}>
-      <audio key={song.url} ref={audioRef} src={song.url}
+      <audio key={song.url} ref={audioRef} preload="auto"
         onTimeUpdate={e => setProgress(e.target.currentTime)}
         onLoadedMetadata={e => setDuration(e.target.duration)}
-        onError={(e) => { setError(true); setPlaying(false); setErrDetail('Network/Load Error code: ' + (e.target.error?.code || 'unknown')); }}
-      />
+        onError={(e) => { setError(true); setPlaying(false); setErrDetail('Network Error code: ' + (e.target.error?.code || 'unknown')); }}
+      >
+        <source src={song.url} type="audio/mpeg" />
+      </audio>
 
       {/* Row 1 */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
@@ -274,7 +276,7 @@ const MiniAudioPlayer = ({ song, accent, isActive }) => {
 
       {error && (
         <p style={{ fontSize: 9, color: 'rgba(255,160,100,0.8)', marginTop: 5, textAlign: 'center', letterSpacing: '0.05em' }}>
-          ⚠ {errDetail || `Failed to load ${song.url.split('/').pop()}`}
+          ⚠ Add <code style={{ fontSize: 8 }}>/songs/{song.url.split('/').pop()}</code> to enable audio
         </p>
       )}
     </div>
