@@ -4,8 +4,8 @@ import { ChevronRight, ChevronLeft, MapPin, Phone, MessageCircle, X, Heart, Play
 import { getImageUrl } from './supabase';
 
 /* Dynamic photo paths — pulled directly from Supabase Cloud Storage */
-const COUPLE_PHOTO  = getImageUrl('photos/couple.jpeg');
-const GALLERY_PATHS = Array.from({length:37}, (_,i) => getImageUrl(`photos/gallery-${i+1}.jpeg`));
+const COUPLE_PHOTO  = getImageUrl('couple.jpeg');
+const GALLERY_PATHS = Array.from({length:37}, (_,i) => getImageUrl(`gallery-${i+1}.jpeg`));
 
 /* ═══════════════ COLOUR TOKENS ═══════════════════════════════════════════ */
 const C = {
