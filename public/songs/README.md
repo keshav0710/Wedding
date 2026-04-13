@@ -8,7 +8,7 @@ The app will automatically pick them up — no code changes needed!
 | Ceremony | Filename         | Suggested Song              |
 |----------|------------------|-----------------------------|
 | Haldi    | `haldi.mp3`      | Haldi Wale Haath — Neha Kakkar |
-| Mehendi  | `mehendi.mp3`    | Mehendi Laga Ke Rakhna      |
+| Mehendi  | `mehendi.mp3`    | Mehendi Laga Ke Rakhna      |/
 | Sangeet  | `sangeet.mp3`    | Aaj Ki Raat — A.R. Rahman   |
 | Mayara   | `mayara.mp3`     | Shubh Vivah / Folk Bhajan   |
 | Reception| `reception.mp3`  | Tujh Mein Rab Dikhta Hai    |

@@ -1,0 +1,559 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "label": "App.js",
+      "file_type": "code",
+      "source_file": "src\\App.js",
+      "source_location": "L1",
+      "id": "src_app_js",
+      "community": 0,
+      "norm_label": "app.js"
+    },
+    {
+      "label": "useCountdown()",
+      "file_type": "code",
+      "source_file": "src\\App.js",
+      "source_location": "L84",
+      "id": "app_usecountdown",
+      "community": 1,
+      "norm_label": "usecountdown()"
+    },
+    {
+      "label": "MandalaCorner()",
+      "file_type": "code",
+      "source_file": "src\\App.js",
+      "source_location": "L96",
+      "id": "app_mandalacorner",
+      "community": 0,
+      "norm_label": "mandalacorner()"
+    },
+    {
+      "label": "GoldDivider()",
+      "file_type": "code",
+      "source_file": "src\\App.js",
+      "source_location": "L113",
+      "id": "app_golddivider",
+      "community": 0,
+      "norm_label": "golddivider()"
+    },
+    {
+      "label": "FloatingPetals()",
+      "file_type": "code",
+      "source_file": "src\\App.js",
+      "source_location": "L121",
+      "id": "app_floatingpetals",
+      "community": 0,
+      "norm_label": "floatingpetals()"
+    },
+    {
+      "label": "PetalDrop()",
+      "file_type": "code",
+      "source_file": "src\\App.js",
+      "source_location": "L131",
+      "id": "app_petaldrop",
+      "community": 0,
+      "norm_label": "petaldrop()"
+    },
+    {
+      "label": "Confetti()",
+      "file_type": "code",
+      "source_file": "src\\App.js",
+      "source_location": "L146",
+      "id": "app_confetti",
+      "community": 0,
+      "norm_label": "confetti()"
+    },
+    {
+      "label": "FnParticles()",
+      "file_type": "code",
+      "source_file": "src\\App.js",
+      "source_location": "L161",
+      "id": "app_fnparticles",
+      "community": 0,
+      "norm_label": "fnparticles()"
+    },
+    {
+      "label": "WaveProgressBar()",
+      "file_type": "code",
+      "source_file": "src\\App.js",
+      "source_location": "L187",
+      "id": "app_waveprogressbar",
+      "community": 0,
+      "norm_label": "waveprogressbar()"
+    },
+    {
+      "label": "MiniAudioPlayer()",
+      "file_type": "code",
+      "source_file": "src\\App.js",
+      "source_location": "L206",
+      "id": "app_miniaudioplayer",
+      "community": 0,
+      "norm_label": "miniaudioplayer()"
+    },
+    {
+      "label": "DressThemeCard()",
+      "file_type": "code",
+      "source_file": "src\\App.js",
+      "source_location": "L300",
+      "id": "app_dressthemecard",
+      "community": 0,
+      "norm_label": "dressthemecard()"
+    },
+    {
+      "label": "CardSlide()",
+      "file_type": "code",
+      "source_file": "src\\App.js",
+      "source_location": "L315",
+      "id": "app_cardslide",
+      "community": 0,
+      "norm_label": "cardslide()"
+    },
+    {
+      "label": "SplashScreen()",
+      "file_type": "code",
+      "source_file": "src\\App.js",
+      "source_location": "L365",
+      "id": "app_splashscreen",
+      "community": 0,
+      "norm_label": "splashscreen()"
+    },
+    {
+      "label": "CoverSlide()",
+      "file_type": "code",
+      "source_file": "src\\App.js",
+      "source_location": "L426",
+      "id": "app_coverslide",
+      "community": 1,
+      "norm_label": "coverslide()"
+    },
+    {
+      "label": "PhotoGallerySlide()",
+      "file_type": "code",
+      "source_file": "src\\App.js",
+      "source_location": "L459",
+      "id": "app_photogalleryslide",
+      "community": 0,
+      "norm_label": "photogalleryslide()"
+    },
+    {
+      "label": "CelebrationsCard()",
+      "file_type": "code",
+      "source_file": "src\\App.js",
+      "source_location": "L532",
+      "id": "app_celebrationscard",
+      "community": 0,
+      "norm_label": "celebrationscard()"
+    },
+    {
+      "label": "FunctionSlide()",
+      "file_type": "code",
+      "source_file": "src\\App.js",
+      "source_location": "L604",
+      "id": "app_functionslide",
+      "community": 0,
+      "norm_label": "functionslide()"
+    },
+    {
+      "label": "VenueContent()",
+      "file_type": "code",
+      "source_file": "src\\App.js",
+      "source_location": "L636",
+      "id": "app_venuecontent",
+      "community": 0,
+      "norm_label": "venuecontent()"
+    },
+    {
+      "label": "FamilyContent()",
+      "file_type": "code",
+      "source_file": "src\\App.js",
+      "source_location": "L680",
+      "id": "app_familycontent",
+      "community": 0,
+      "norm_label": "familycontent()"
+    },
+    {
+      "label": "RSVPContent()",
+      "file_type": "code",
+      "source_file": "src\\App.js",
+      "source_location": "L722",
+      "id": "app_rsvpcontent",
+      "community": 0,
+      "norm_label": "rsvpcontent()"
+    },
+    {
+      "label": "Lightbox()",
+      "file_type": "code",
+      "source_file": "src\\App.js",
+      "source_location": "L791",
+      "id": "app_lightbox",
+      "community": 0,
+      "norm_label": "lightbox()"
+    },
+    {
+      "label": "WeddingInvitation()",
+      "file_type": "code",
+      "source_file": "src\\App.js",
+      "source_location": "L802",
+      "id": "app_weddinginvitation",
+      "community": 0,
+      "norm_label": "weddinginvitation()"
+    },
+    {
+      "label": "App.test.js",
+      "file_type": "code",
+      "source_file": "src\\App.test.js",
+      "source_location": "L1",
+      "id": "src_app_test_js",
+      "community": 4,
+      "norm_label": "app.test.js"
+    },
+    {
+      "label": "index.js",
+      "file_type": "code",
+      "source_file": "src\\index.js",
+      "source_location": "L1",
+      "id": "src_index_js",
+      "community": 5,
+      "norm_label": "index.js"
+    },
+    {
+      "label": "reportWebVitals.js",
+      "file_type": "code",
+      "source_file": "src\\reportWebVitals.js",
+      "source_location": "L1",
+      "id": "src_reportwebvitals_js",
+      "community": 2,
+      "norm_label": "reportwebvitals.js"
+    },
+    {
+      "label": "reportWebVitals()",
+      "file_type": "code",
+      "source_file": "src\\reportWebVitals.js",
+      "source_location": "L1",
+      "id": "reportwebvitals_reportwebvitals",
+      "community": 2,
+      "norm_label": "reportwebvitals()"
+    },
+    {
+      "label": "setupTests.js",
+      "file_type": "code",
+      "source_file": "src\\setupTests.js",
+      "source_location": "L1",
+      "id": "src_setuptests_js",
+      "community": 6,
+      "norm_label": "setuptests.js"
+    },
+    {
+      "label": "supabase.js",
+      "file_type": "code",
+      "source_file": "src\\supabase.js",
+      "source_location": "L1",
+      "id": "src_supabase_js",
+      "community": 3,
+      "norm_label": "supabase.js"
+    },
+    {
+      "label": "getImageUrl()",
+      "file_type": "code",
+      "source_file": "src\\supabase.js",
+      "source_location": "L10",
+      "id": "supabase_getimageurl",
+      "community": 3,
+      "norm_label": "getimageurl()"
+    }
+  ],
+  "links": [
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\App.js",
+      "source_location": "L84",
+      "weight": 1.0,
+      "_src": "src_app_js",
+      "_tgt": "app_usecountdown",
+      "source": "src_app_js",
+      "target": "app_usecountdown",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\App.js",
+      "source_location": "L96",
+      "weight": 1.0,
+      "_src": "src_app_js",
+      "_tgt": "app_mandalacorner",
+      "source": "src_app_js",
+      "target": "app_mandalacorner",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\App.js",
+      "source_location": "L113",
+      "weight": 1.0,
+      "_src": "src_app_js",
+      "_tgt": "app_golddivider",
+      "source": "src_app_js",
+      "target": "app_golddivider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\App.js",
+      "source_location": "L121",
+      "weight": 1.0,
+      "_src": "src_app_js",
+      "_tgt": "app_floatingpetals",
+      "source": "src_app_js",
+      "target": "app_floatingpetals",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\App.js",
+      "source_location": "L131",
+      "weight": 1.0,
+      "_src": "src_app_js",
+      "_tgt": "app_petaldrop",
+      "source": "src_app_js",
+      "target": "app_petaldrop",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\App.js",
+      "source_location": "L146",
+      "weight": 1.0,
+      "_src": "src_app_js",
+      "_tgt": "app_confetti",
+      "source": "src_app_js",
+      "target": "app_confetti",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\App.js",
+      "source_location": "L161",
+      "weight": 1.0,
+      "_src": "src_app_js",
+      "_tgt": "app_fnparticles",
+      "source": "src_app_js",
+      "target": "app_fnparticles",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\App.js",
+      "source_location": "L187",
+      "weight": 1.0,
+      "_src": "src_app_js",
+      "_tgt": "app_waveprogressbar",
+      "source": "src_app_js",
+      "target": "app_waveprogressbar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\App.js",
+      "source_location": "L206",
+      "weight": 1.0,
+      "_src": "src_app_js",
+      "_tgt": "app_miniaudioplayer",
+      "source": "src_app_js",
+      "target": "app_miniaudioplayer",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\App.js",
+      "source_location": "L300",
+      "weight": 1.0,
+      "_src": "src_app_js",
+      "_tgt": "app_dressthemecard",
+      "source": "src_app_js",
+      "target": "app_dressthemecard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\App.js",
+      "source_location": "L315",
+      "weight": 1.0,
+      "_src": "src_app_js",
+      "_tgt": "app_cardslide",
+      "source": "src_app_js",
+      "target": "app_cardslide",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\App.js",
+      "source_location": "L365",
+      "weight": 1.0,
+      "_src": "src_app_js",
+      "_tgt": "app_splashscreen",
+      "source": "src_app_js",
+      "target": "app_splashscreen",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\App.js",
+      "source_location": "L426",
+      "weight": 1.0,
+      "_src": "src_app_js",
+      "_tgt": "app_coverslide",
+      "source": "src_app_js",
+      "target": "app_coverslide",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\App.js",
+      "source_location": "L459",
+      "weight": 1.0,
+      "_src": "src_app_js",
+      "_tgt": "app_photogalleryslide",
+      "source": "src_app_js",
+      "target": "app_photogalleryslide",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\App.js",
+      "source_location": "L532",
+      "weight": 1.0,
+      "_src": "src_app_js",
+      "_tgt": "app_celebrationscard",
+      "source": "src_app_js",
+      "target": "app_celebrationscard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\App.js",
+      "source_location": "L604",
+      "weight": 1.0,
+      "_src": "src_app_js",
+      "_tgt": "app_functionslide",
+      "source": "src_app_js",
+      "target": "app_functionslide",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\App.js",
+      "source_location": "L636",
+      "weight": 1.0,
+      "_src": "src_app_js",
+      "_tgt": "app_venuecontent",
+      "source": "src_app_js",
+      "target": "app_venuecontent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\App.js",
+      "source_location": "L680",
+      "weight": 1.0,
+      "_src": "src_app_js",
+      "_tgt": "app_familycontent",
+      "source": "src_app_js",
+      "target": "app_familycontent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\App.js",
+      "source_location": "L722",
+      "weight": 1.0,
+      "_src": "src_app_js",
+      "_tgt": "app_rsvpcontent",
+      "source": "src_app_js",
+      "target": "app_rsvpcontent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\App.js",
+      "source_location": "L791",
+      "weight": 1.0,
+      "_src": "src_app_js",
+      "_tgt": "app_lightbox",
+      "source": "src_app_js",
+      "target": "app_lightbox",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\App.js",
+      "source_location": "L802",
+      "weight": 1.0,
+      "_src": "src_app_js",
+      "_tgt": "app_weddinginvitation",
+      "source": "src_app_js",
+      "target": "app_weddinginvitation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\App.js",
+      "source_location": "L427",
+      "weight": 1.0,
+      "_src": "app_coverslide",
+      "_tgt": "app_usecountdown",
+      "source": "app_usecountdown",
+      "target": "app_coverslide",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\reportWebVitals.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_src": "src_reportwebvitals_js",
+      "_tgt": "reportwebvitals_reportwebvitals",
+      "source": "src_reportwebvitals_js",
+      "target": "reportwebvitals_reportwebvitals",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\supabase.js",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_src": "src_supabase_js",
+      "_tgt": "supabase_getimageurl",
+      "source": "src_supabase_js",
+      "target": "supabase_getimageurl",
+      "confidence_score": 1.0
+    }
+  ],
+  "hyperedges": []
+}

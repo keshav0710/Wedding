@@ -4,7 +4,7 @@ import { ChevronRight, ChevronLeft, MapPin, Phone, MessageCircle, X, Heart, Play
 import { getImageUrl } from './supabase';
 
 /* Dynamic photo paths — pulled directly from Supabase Cloud Storage */
-const COUPLE_PHOTO = getImageUrl('couple.jpeg');
+const COUPLE_PHOTO = '/images/couple.jpeg';
 const GALLERY_PATHS = Array.from({ length: 37 }, (_, i) => getImageUrl(`gallery-${i + 1}.jpeg`));
 
 /* ═══════════════ COLOUR TOKENS ═══════════════════════════════════════════ */
@@ -18,36 +18,36 @@ const C = {
 /* ═══════════════ WEDDING DATA ════════════════════════════════════════════ */
 const WD = {
   brideName: 'Skandha', groomName: 'Mehul',
-  weddingDate: 'June 28, 2026',
-  venue: 'The Oberoi Udaipur',
-  address: 'Hanimilton Hill, Udaipur, Rajasthan 313001',
-  phone: '+91 98765 43210',
-  parentNames: { groom: 'Mr. & Mrs. Sharma', bride: 'Mr. & Mrs. Kapoor' },
+  weddingDate: 'June 28-29, 2026',
+  venue: 'Utsav Marriage',
+  address: '197, Sector 2 Rd, Sector 2, Vijay Bari, Vidyadhar Nagar, Jaipur, Rajasthan 302039',
+  phone: '+91 9414167448',
+  parentNames: { groom: 'Mr. & Mrs. Baldwa', bride: 'Mr. & Mrs. Toshniwal' },
   functions: [
     {
       id: 'haldi', name: 'Haldi', date: 'June 28, 2026', time: '11:00 AM', emoji: '🌼',
       tagline: 'Golden moments with golden turmeric',
       image: '/images/haldi.png',
       palette: { from: '#2A1D00', via: '#3F2C00', accent: '#D4A853', light: '#FFF8E7' },
-      song: { title: 'Haldi Wale Haath', artist: 'Neha Kakkar', url: '/songs/haldi.mp3' },
+      song: { title: 'Haldi Wale Haath', url: '/songs/haldi.m4a' },
       dress: { color: '#D4A853', swatch2: '#FFF8E7', label: 'Soft Gold & Ivory', tip: 'Soft gold, ivory, saffron & marigold hues. Silk kurtas, lehengas preferred. Avoid blacks!' },
       particles: { chars: ['✦', '·', '◆', '✿', '•'], colors: ['#D4A853', '#F0D070', '#FFF8E7', '#C9A96E'] },
     },
+    // {
+    //   id: 'mehendi', name: 'Mehendi', date: 'June 24, 2026', time: '11:00 AM', emoji: '🌿',
+    //   tagline: 'Colors, celebrations & beautiful designs',
+    //   image: '/images/mehendi.png',
+    //   palette: { from: '#061A0C', via: '#0E2E16', accent: '#5DB870', light: '#E4F7E8' },
+    //   song: { title: 'Mehendi Laga Ke Rakhna', artist: 'Alka Yagnik', url: '/songs/mehendi.mp3' },
+    //   dress: { color: '#4CAF50', swatch2: '#E4F7E8', label: 'Garden Greens & Pastels', tip: 'Mint greens, peach, powder pink & coral. Light floral anarkalis & sarees!' },
+    //   particles: { chars: ['✦', '·', '❀', '✿', '◇'], colors: ['#5DB870', '#A8D5B5', '#D4EEA8', '#C8F0C8'] },
+    // },
     {
-      id: 'mehendi', name: 'Mehendi', date: 'June 27, 2026', time: '5:00 PM', emoji: '🌿',
-      tagline: 'Colors, celebrations & beautiful designs',
-      image: '/images/mehendi.png',
-      palette: { from: '#061A0C', via: '#0E2E16', accent: '#5DB870', light: '#E4F7E8' },
-      song: { title: 'Mehendi Laga Ke Rakhna', artist: 'Alka Yagnik', url: '/songs/mehendi.mp3' },
-      dress: { color: '#4CAF50', swatch2: '#E4F7E8', label: 'Garden Greens & Pastels', tip: 'Mint greens, peach, powder pink & coral. Light floral anarkalis & sarees!' },
-      particles: { chars: ['✦', '·', '❀', '✿', '◇'], colors: ['#5DB870', '#A8D5B5', '#D4EEA8', '#C8F0C8'] },
-    },
-    {
-      id: 'sangeet', name: 'Sangeet', date: 'June 27, 2026', time: '8:00 PM', emoji: '🎶',
+      id: 'sangeet', name: 'Sangeet', date: 'June 27, 2026', time: '6:00 PM', emoji: '🎶',
       tagline: 'Music, dance & joyous festivities',
       image: '/images/sangeet.png',
       palette: { from: '#0A0418', via: '#150930', accent: '#B57BF5', light: '#F0E8FF' },
-      song: { title: 'Aaj Ki Raat', artist: 'A.R. Rahman', url: '/songs/sangeet.mp3' },
+      song: { title: 'Aaj Ki Raat', url: '/songs/sangeet.m4a' },
       dress: { color: '#9333EA', swatch2: '#EDE9FE', label: 'Jewel Tones — Glam It Up!', tip: 'Fuchsia, royal purple, sapphire, magenta. Heavy embroidery & gowns. Glam it up!' },
       particles: { chars: ['♪', '♫', '✦', '·', '★'], colors: ['#B57BF5', '#E0C8FF', '#fff', '#D4B8FF'] },
     },
@@ -56,7 +56,7 @@ const WD = {
       tagline: 'Sacred Gujarati rituals with family blessings',
       image: '/images/mayara.png',
       palette: { from: '#240800', via: '#3E1000', accent: '#F08030', light: '#FFF0E4' },
-      song: { title: 'Shubh Vivah', artist: 'Traditional', url: '/songs/mayara.mp3' },
+      song: { title: 'Shubh Vivah', url: '/songs/mayara.mp3' },
       dress: { color: '#F08030', swatch2: '#FFF0E4', label: 'Saffron & Traditional', tip: 'Traditional Gujarati — chaniya choli in saffron, red & orange. Dhoti-kurta for men.' },
       particles: { chars: ['✦', '·', '◆', '•', '❈'], colors: ['#F08030', '#FFD080', '#FFF0E4', '#F5A060'] },
     },
@@ -65,9 +65,18 @@ const WD = {
       tagline: 'An evening of love, glamour & celebration',
       image: '/images/reception.png',
       palette: { from: '#08080F', via: '#10102A', accent: '#D4B896', light: '#FFF8F0' },
-      song: { title: 'Tujh Mein Rab Dikhta Hai', artist: 'Roop Kumar Rathod', url: '/songs/reception.mp3' },
+      song: { title: 'Tujh Mein Rab Dikhta Hai', url: '/songs/reception.mp3' },
       dress: { color: '#C9A96E', swatch2: '#FFF8E7', label: 'Black Tie — Gold & Ivory', tip: 'Sherwanis, indo-western suits, embellished sarees & gowns. Chandeliers & champagne vibes!' },
       particles: { chars: ['✦', '◆', '·', '★', '♦'], colors: ['#D4B896', '#FFF8F0', '#C9A96E', '#E8D5A8'] },
+    },
+    {
+      id: 'pheras', name: 'Pheras', date: 'June 28, 2026', time: '6:00 PM', emoji: '🔥',
+      tagline: 'Saat Pheras — seven sacred vows around the holy fire',
+      image: '/images/pheras.png',
+      palette: { from: '#1A0800', via: '#2E1206', accent: '#E85D30', light: '#FFE8D8' },
+      song: { title: 'Jai Ho', url: '/songs/pheras.mp3' },
+      dress: { color: '#E85D30', swatch2: '#FFE8D8', label: 'Bridal Red & Sacred Gold', tip: 'Traditional red & maroon lehengas, sherwanis with gold embroidery. Embrace the sacred fire glow!' },
+      particles: { chars: ['🔥', '✦', '·', '◆', '❈'], colors: ['#E85D30', '#FFB070', '#FFE8D8', '#F0A050'] },
     },
   ],
 };
@@ -76,7 +85,7 @@ const WEDDING_DATE = new Date('2026-06-28T18:00:00+05:30');
 
 const NAV_SYMBOLS = {
   cover: '💍', gallery: '📷', celebrations: '✨',
-  haldi: '🌼', mehendi: '🌿', sangeet: '🎶', mayara: '🪔', reception: '💎',
+  haldi: '🌼', mehendi: '🌿', sangeet: '🎶', mayara: '🪔', reception: '💎', pheras: '🔥',
   venue: '🏰', family: '🙏', rsvp: '💌',
 };
 
@@ -211,23 +220,35 @@ const MiniAudioPlayer = ({ song, accent, isActive }) => {
   const [error, setError] = useState(false);
   const [errDetail, setErrDetail] = useState('');
 
-  useEffect(() => { if (!isActive && audioRef.current) { audioRef.current.pause(); setPlaying(false); } }, [isActive]);
+  useEffect(() => {
+    if (isActive && audioRef.current) {
+      audioRef.current.play().then(() => setPlaying(true)).catch(e => {
+        setPlaying(false);
+        setError(true);
+        setErrDetail('Auto-play blocked: ' + e.message);
+      });
+    } else if (!isActive && audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      setPlaying(false);
+    }
+  }, [isActive]);
 
   const toggle = async () => {
     const a = audioRef.current; if (!a) return;
-    if (playing) { 
-      a.pause(); 
-      setPlaying(false); 
-    } else { 
-      setError(false); 
-      setErrDetail(''); 
+    if (playing) {
+      a.pause();
+      setPlaying(false);
+    } else {
+      setError(false);
+      setErrDetail('');
       try {
         setPlaying(true); // Optimistic UI
         await a.play();
       } catch (e) {
         setPlaying(false);
-        setError(true); 
-        setErrDetail('Play blocked: ' + e.message); 
+        setError(true);
+        setErrDetail('Play blocked: ' + e.message);
       }
     }
   };
@@ -366,7 +387,7 @@ const SplashScreen = ({ onEnter, isExiting }) => {
   const [photoLoaded, setPhotoLoaded] = useState(false);
 
   return (
-    <div style={{ position: 'fixed', inset: 0, zIndex: 200, overflow: 'hidden', animation: isExiting ? 'splashExit 0.9s cubic-bezier(0.4,0,0.2,1) forwards' : 'fadeIn 0.8s ease-out' }}>
+    <div style={{ position: 'fixed', inset: 0, zIndex: 200, overflow: 'hidden', animation: isExiting ? 'splashExit 0.9s cubic-bezier(0.4,0,0.2,1) forwards' : 'none' }}>
 
       {/* Full-screen couple photo from /photos/couple.jpg */}
       <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(160deg,${C.ivory} 0%,${C.cream} 40%,${C.petal} 70%,${C.blush} 100%)` }}>
@@ -470,7 +491,7 @@ const PhotoGallerySlide = () => {
   const singleW = GALLERY_PATHS.length * (ITEM_W + GAP);
 
   const startRAF = useCallback(() => {
-    const step = () => { scrollX.current += 0.48; if (scrollX.current >= singleW) scrollX.current = 0; if (trackRef.current) trackRef.current.style.transform = `translateX(-${scrollX.current}px)`; rafId.current = requestAnimationFrame(step); };
+    const step = () => { scrollX.current += 2.0; if (scrollX.current >= singleW) scrollX.current = 0; if (trackRef.current) trackRef.current.style.transform = `translateX(-${scrollX.current}px)`; rafId.current = requestAnimationFrame(step); };
     rafId.current = requestAnimationFrame(step);
   }, [singleW]);
 
@@ -660,7 +681,7 @@ const VenueContent = () => (
         <span style={{ fontSize: 13, color: C.warmGray, fontFamily: "'Cormorant Garamond',serif", fontStyle: 'italic' }}>
           {WD.venue}
         </span>
-        <span style={{ fontSize: 10, color: 'rgba(201,169,110,0.5)', letterSpacing: '0.1em' }}>Udaipur, Rajasthan</span>
+        <span style={{ fontSize: 10, color: 'rgba(201,169,110,0.5)', letterSpacing: '0.1em' }}>Jaipur, Rajasthan</span>
       </div>
 
       <a href={`https://maps.google.com/?q=${encodeURIComponent(WD.venue + ' ' + WD.address)}`} target="_blank" rel="noopener noreferrer"
