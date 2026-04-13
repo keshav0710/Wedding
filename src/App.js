@@ -21,7 +21,7 @@ const WD = {
   weddingDate: 'June 28-29, 2026',
   venue: 'Utsav Marriage',
   address: '197, Sector 2 Rd, Sector 2, Vijay Bari, Vidyadhar Nagar, Jaipur, Rajasthan 302039',
-  phone: '+91 9414167448',
+  phones: { groom: '+91 7665226944', bride: '+91 8890363091' },
   parentNames: { groom: 'Mr. & Mrs. Baldwa', bride: 'Mr. & Mrs. Toshniwal' },
   functions: [
     {
@@ -741,7 +741,11 @@ const FamilyContent = () => (
 
 /* ═══════════════ RSVP (Celebratory Deep Rose) ═════════════════════════════ */
 const RSVPContent = () => {
+  const [side, setSide] = useState(null); // 'bride' or 'groom'
   const [sent, setSent] = useState(false);
+
+  const phone = side === 'bride' ? WD.phones.bride : WD.phones.groom;
+
   return (
     <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(160deg,#280614 0%,#3E0C1E 50%,#1E0810 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <PetalDrop colors={[C.rose, C.blush, '#FF99AA', 'rgba(212,118,138,0.7)', '#FFB8C8']} />
@@ -762,43 +766,74 @@ const RSVPContent = () => {
 
         <GoldDivider color={C.rose} my={0} />
 
-        <p style={{ fontSize: 10, letterSpacing: '0.22em', color: 'rgba(255,153,170,0.7)', textTransform: 'uppercase', margin: '18px 0 8px' }}>
-          Kindly RSVP by June 14, 2026
-        </p>
-        <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 22, color: C.gold, marginBottom: 20, letterSpacing: '0.04em' }}>
-          {WD.phone}
-        </p>
+        {!side ? (
+          <div style={{ marginTop: 24, animation: 'fadeIn 0.5s' }}>
+            <p style={{ fontSize: 12, letterSpacing: '0.15em', color: 'rgba(255,153,170,0.8)', textTransform: 'uppercase', marginBottom: 16 }}>
+              Where are you joining us from?
+            </p>
+            <div style={{ display: 'flex', gap: 12, justifyContent: 'center' }}>
+              <button onClick={() => setSide('bride')} style={{
+                flex: 1, padding: '14px 10px', borderRadius: 16, background: 'rgba(255,255,255,0.06)', border: `1px solid ${C.rose}40`,
+                color: C.ivory, cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, backdropFilter: 'blur(8px)', transition: 'all 0.3s'
+              }}>
+                <span style={{ fontSize: 24 }}>👰</span>
+                <span style={{ fontSize: 13, fontFamily: "'Playfair Display',serif" }}>Bride's Side</span>
+              </button>
+              <button onClick={() => setSide('groom')} style={{
+                flex: 1, padding: '14px 10px', borderRadius: 16, background: 'rgba(255,255,255,0.06)', border: `1px solid ${C.rose}40`,
+                color: C.ivory, cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, backdropFilter: 'blur(8px)', transition: 'all 0.3s'
+              }}>
+                <span style={{ fontSize: 24 }}>🤵</span>
+                <span style={{ fontSize: 13, fontFamily: "'Playfair Display',serif" }}>Groom's Side</span>
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div style={{ animation: 'slideUp 0.4s both' }}>
+            <p style={{ fontSize: 10, letterSpacing: '0.22em', color: 'rgba(255,153,170,0.7)', textTransform: 'uppercase', margin: '18px 0 8px' }}>
+              Kindly RSVP by June 14, 2026
+            </p>
+            <div style={{ display: 'inline-block', position: 'relative' }}>
+              <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 22, color: C.gold, marginBottom: 20, letterSpacing: '0.04em' }}>
+                {phone}
+              </p>
+              <button onClick={() => setSide(null)} style={{ position: 'absolute', right: -30, top: '5px', background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', cursor: 'pointer', fontSize: 12 }}>
+                <X size={14} />
+              </button>
+            </div>
 
-        {/* CTA buttons */}
-        <div style={{ display: 'flex', gap: 12, justifyContent: 'center', marginBottom: 20 }}>
-          <a href={`tel:${WD.phone}`} style={{
-            display: 'flex', alignItems: 'center', gap: 7, padding: '13px 22px', borderRadius: 9999,
-            background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.2)',
-            color: C.ivory, fontSize: 12, textDecoration: 'none', backdropFilter: 'blur(10px)',
-          }}>
-            <Phone size={14} /> Call
-          </a>
-          <a href={`https://wa.me/${WD.phone.replace(/\s/g, '').replace(/^\+/, '')}?text=Hi!%20We%20are%20attending%20the%20wedding%20of%20${WD.brideName}%20and%20${WD.groomName}%20on%20${WD.weddingDate}!%20🎉`}
-            target="_blank" rel="noopener noreferrer"
-            style={{
-              display: 'flex', alignItems: 'center', gap: 7, padding: '13px 22px', borderRadius: 9999,
-              background: `linear-gradient(135deg,${C.rose},${C.roseDark})`,
-              color: '#fff', fontSize: 12, textDecoration: 'none',
-              boxShadow: `0 8px 24px rgba(212,118,138,0.4)`, fontWeight: 500,
+            {/* CTA buttons */}
+            <div style={{ display: 'flex', gap: 12, justifyContent: 'center', marginBottom: 20 }}>
+              <a href={`tel:${phone}`} style={{
+                display: 'flex', alignItems: 'center', gap: 7, padding: '13px 22px', borderRadius: 9999,
+                background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.2)',
+                color: C.ivory, fontSize: 12, textDecoration: 'none', backdropFilter: 'blur(10px)',
+              }}>
+                <Phone size={14} /> Call
+              </a>
+              <a href={`https://wa.me/${phone.replace(/\s/g, '').replace(/^\+/, '')}?text=Hi!%20We%20are%20attending%20the%20wedding%20of%20${WD.brideName}%20and%20${WD.groomName}%20on%20${WD.weddingDate}!%20🎉`}
+                target="_blank" rel="noopener noreferrer"
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 7, padding: '13px 22px', borderRadius: 9999,
+                  background: `linear-gradient(135deg,${C.rose},${C.roseDark})`,
+                  color: '#fff', fontSize: 12, textDecoration: 'none',
+                  boxShadow: `0 8px 24px rgba(212,118,138,0.4)`, fontWeight: 500,
+                }}>
+                <MessageCircle size={14} /> WhatsApp
+              </a>
+            </div>
+
+            {/* Confirm button */}
+            <button onClick={() => setSent(true)} style={{
+              background: 'transparent', border: `1px solid ${C.rose}40`,
+              borderRadius: 9999, padding: '10px 24px',
+              color: '#FF99AA', fontSize: 12, letterSpacing: '0.15em', cursor: 'pointer',
+              transition: 'all 0.3s',
             }}>
-            <MessageCircle size={14} /> WhatsApp
-          </a>
-        </div>
-
-        {/* Confirm button */}
-        <button onClick={() => setSent(true)} style={{
-          background: 'transparent', border: `1px solid ${C.rose}40`,
-          borderRadius: 9999, padding: '10px 24px',
-          color: '#FF99AA', fontSize: 12, letterSpacing: '0.15em', cursor: 'pointer',
-          transition: 'all 0.3s',
-        }}>
-          {sent ? '✓ See you there! 💕' : '✦ Mark as Attending'}
-        </button>
+              {sent ? '✓ See you there! 💕' : '✦ Mark as Attending'}
+            </button>
+          </div>
+        )}
 
         <p style={{ fontSize: 10, letterSpacing: '0.18em', color: 'rgba(201,169,110,0.5)', marginTop: 18 }}>
           with all our love 💕
