@@ -70,7 +70,7 @@ const WD = {
       particles: { chars: ['✦', '◆', '·', '★', '♦'], colors: ['#D4B896', '#FFF8F0', '#C9A96E', '#E8D5A8'] },
     },
     {
-      id: 'pheras', name: 'Pheras', date: 'June 28, 2026', time: '6:00 PM', emoji: '🔥',
+      id: 'pheras', name: 'Pheras', date: 'June 30, 2026', time: '1:00 AM', emoji: '🔥',
       tagline: 'Saat Pheras — seven sacred vows around the holy fire',
       image: '/images/pheras.png',
       palette: { from: '#1A0800', via: '#2E1206', accent: '#E85D30', light: '#FFE8D8' },
@@ -335,8 +335,22 @@ const DressThemeCard = ({ dress, accent }) => (
 /* ═══════════════ CARD WRAPPER ════════════════════════════════════════════ */
 const CardSlide = ({ sectionIcon, sectionName, accentColor = C.rose, petalColors, children }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [touchY, setTouchY] = useState(0);
+  const [touchX, setTouchX] = useState(0);
+
+  const handleTS = e => { setTouchY(e.touches[0].clientY); setTouchX(e.touches[0].clientX); };
+  const handleTE = e => {
+    const dy = touchY - e.changedTouches[0].clientY;
+    const dx = touchX - e.changedTouches[0].clientX;
+    if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 40) {
+      e.stopPropagation();
+      if (dy > 0 && !isOpen) setIsOpen(true);
+      if (dy < 0 && isOpen) setIsOpen(false);
+    }
+  };
+
   return (
-    <div style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden' }}>
+    <div onTouchStart={handleTS} onTouchEnd={handleTE} style={{ position: 'relative', width: '100vw', height: '100dvh', overflow: 'hidden' }}>
       {/* Content */}
       <div style={{
         position: 'absolute', inset: 0,
@@ -346,9 +360,9 @@ const CardSlide = ({ sectionIcon, sectionName, accentColor = C.rose, petalColors
         {isOpen && <PetalDrop colors={petalColors} />}
         {children}
         <button onClick={() => setIsOpen(false)} style={{
-          position: 'fixed', bottom: 88, right: 16, zIndex: 25, width: 42, height: 42, borderRadius: '50%',
+          position: 'fixed', bottom: 'calc(88px + env(safe-area-inset-bottom))', right: 16, zIndex: 25, width: 48, height: 48, borderRadius: '50%',
           border: `1.5px solid ${C.goldLight}`, background: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(8px)',
-          cursor: 'pointer', fontSize: 18, display: 'flex', alignItems: 'center', justifyContent: 'center',
+          cursor: 'pointer', fontSize: 20, display: 'flex', alignItems: 'center', justifyContent: 'center',
           boxShadow: '0 4px 20px rgba(0,0,0,0.12)', animation: 'scaleIn 0.4s 0.8s both',
         }}>💌</button>
       </div>
@@ -368,13 +382,13 @@ const CardSlide = ({ sectionIcon, sectionName, accentColor = C.rose, petalColors
 
         <div style={{ textAlign: 'center', padding: '0 44px', animation: 'slideUp 0.6s both', position: 'relative', zIndex: 2 }}>
           <div style={{ fontSize: 52, marginBottom: 10, filter: `drop-shadow(0 4px 14px ${accentColor}44)` }}>{sectionIcon}</div>
-          <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 11, letterSpacing: '0.35em', color: accentColor, textTransform: 'uppercase', marginBottom: 6 }}>Wedding of</p>
-          <p style={{ fontFamily: "'Playfair Display',serif", fontWeight: 400, fontSize: 'clamp(18px,5vw,24px)', color: C.charcoal, marginBottom: 4 }}>{WD.brideName} & {WD.groomName}</p>
+          <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 13, letterSpacing: '0.35em', color: accentColor, textTransform: 'uppercase', marginBottom: 6 }}>Wedding of</p>
+          <p style={{ fontFamily: "'Playfair Display',serif", fontWeight: 400, fontSize: 'clamp(22px,5vw,26px)', color: C.charcoal, marginBottom: 4 }}>{WD.brideName} & {WD.groomName}</p>
           <GoldDivider color={C.gold} my={12} />
-          <h2 style={{ fontFamily: "'Playfair Display',serif", fontWeight: 300, fontStyle: 'italic', fontSize: 'clamp(28px,8vw,42px)', color: C.charcoal, marginBottom: 26 }}>{sectionName}</h2>
+          <h2 style={{ fontFamily: "'Playfair Display',serif", fontWeight: 300, fontStyle: 'italic', fontSize: 'clamp(32px,8vw,42px)', color: C.charcoal, marginBottom: 26 }}>{sectionName}</h2>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '11px 26px', borderRadius: 9999, background: `${accentColor}18`, border: `1px solid ${accentColor}40` }}>
-            <span style={{ fontSize: 16 }}>💌</span>
-            <span style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 13, color: accentColor, letterSpacing: '0.1em', fontStyle: 'italic' }}>Tap to open</span>
+            <span style={{ fontSize: 16 }}>👆</span>
+            <span style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 13, color: accentColor, letterSpacing: '0.1em', fontStyle: 'italic' }}>Tap or Swipe up</span>
           </div>
         </div>
       </div>
@@ -385,9 +399,13 @@ const CardSlide = ({ sectionIcon, sectionName, accentColor = C.rose, petalColors
 /* ═══════════════ SPLASH SCREEN ═══════════════════════════════════════════ */
 const SplashScreen = ({ onEnter, isExiting }) => {
   const [photoLoaded, setPhotoLoaded] = useState(false);
+  const [touchY, setTouchY] = useState(0);
+
+  const handleTS = e => setTouchY(e.touches[0].clientY);
+  const handleTE = e => { if (touchY - e.changedTouches[0].clientY > 45) onEnter(); };
 
   return (
-    <div style={{ position: 'fixed', inset: 0, zIndex: 200, overflow: 'hidden', animation: isExiting ? 'splashExit 0.9s cubic-bezier(0.4,0,0.2,1) forwards' : 'none' }}>
+    <div onTouchStart={handleTS} onTouchEnd={handleTE} style={{ position: 'fixed', inset: 0, zIndex: 200, overflow: 'hidden', animation: isExiting ? 'splashExit 0.9s cubic-bezier(0.4,0,0.2,1) forwards' : 'none' }}>
 
       {/* Full-screen couple photo from /photos/couple.jpg */}
       <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(160deg,${C.ivory} 0%,${C.cream} 40%,${C.petal} 70%,${C.blush} 100%)` }}>
@@ -396,7 +414,7 @@ const SplashScreen = ({ onEnter, isExiting }) => {
           fetchPriority="high"
           onLoad={() => setPhotoLoaded(true)}
           onError={() => setPhotoLoaded(false)}
-          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top', display: photoLoaded ? 'block' : 'none' }}
+          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: photoLoaded ? 'block' : 'none' }}
         />
         {/* Show decorative placeholder if photo not yet added */}
         {!photoLoaded && (
@@ -430,14 +448,14 @@ const SplashScreen = ({ onEnter, isExiting }) => {
           </svg>
         </div>
 
-        <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 11, letterSpacing: '0.38em', color: 'rgba(232,213,168,0.88)', textTransform: 'uppercase', marginBottom: 8, animation: 'fadeIn 1s 0.4s both' }}>A Wedding Celebration</p>
-        <h1 style={{ fontFamily: "'Playfair Display',serif", fontWeight: 400, fontSize: 'clamp(30px,8vw,48px)', lineHeight: 1.1, color: '#fff', textShadow: '0 2px 24px rgba(0,0,0,0.65)', margin: '0 0 4px', animation: 'slideUp 0.8s 0.3s both' }}>
+        <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 13, letterSpacing: '0.38em', color: 'rgba(232,213,168,0.88)', textTransform: 'uppercase', marginBottom: 8, animation: 'fadeIn 1s 0.4s both' }}>A Wedding Celebration</p>
+        <h1 style={{ fontFamily: "'Playfair Display',serif", fontWeight: 400, fontSize: 'clamp(36px,8vw,48px)', lineHeight: 1.1, color: '#fff', textShadow: '0 2px 24px rgba(0,0,0,0.65)', margin: '0 0 4px', animation: 'slideUp 0.8s 0.3s both' }}>
           {WD.brideName} <span style={{ color: C.goldLight, fontStyle: 'italic' }}>&</span> {WD.groomName}
         </h1>
-        <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 14, letterSpacing: '0.15em', color: 'rgba(232,213,168,0.68)', marginBottom: 28, animation: 'fadeIn 1s 0.6s both' }}>{WD.weddingDate}</p>
+        <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 16, letterSpacing: '0.15em', color: 'rgba(232,213,168,0.68)', marginBottom: 28, animation: 'fadeIn 1s 0.6s both' }}>{WD.weddingDate}</p>
 
         <div onClick={onEnter} style={{ cursor: 'pointer', animation: 'fadeIn 1s 1s both' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 9, padding: '14px 38px', borderRadius: 9999, background: `linear-gradient(135deg,${C.rose},${C.roseDark})`, color: '#fff', fontSize: 12, letterSpacing: '0.22em', textTransform: 'uppercase', fontWeight: 500, boxShadow: '0 12px 36px rgba(180,80,100,0.5)', animation: 'pulseGlow 2.5s 2s ease-in-out infinite' }}>✦ Open Invitation ✦</div>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 9, padding: '14px 38px', borderRadius: 9999, background: `linear-gradient(135deg,${C.rose},${C.roseDark})`, color: '#fff', fontSize: 12, letterSpacing: '0.22em', textTransform: 'uppercase', fontWeight: 500, boxShadow: '0 12px 36px rgba(180,80,100,0.5)', animation: 'pulseGlow 2.5s 2s ease-in-out infinite' }}>👆 Tap or Swipe Up ✦</div>
         </div>
       </div>
     </div>
@@ -448,25 +466,25 @@ const SplashScreen = ({ onEnter, isExiting }) => {
 const CoverSlide = ({ currentSlide, totalSlides }) => {
   const { days, hours, min, sec } = useCountdown(WEDDING_DATE);
   return (
-    <div style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden', background: `linear-gradient(160deg,${C.ivory} 0%,${C.cream} 45%,${C.petal} 100%)`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <div style={{ position: 'relative', width: '100vw', height: '100dvh', overflow: 'hidden', background: `linear-gradient(160deg,${C.ivory} 0%,${C.cream} 45%,${C.petal} 100%)`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <MandalaCorner corner="tr" size={200} color={C.gold} opacity={0.13} />
       <MandalaCorner corner="bl" size={200} color={C.rose} opacity={0.08} />
       <Confetti />
       <FloatingPetals />
       <div style={{ position: 'relative', zIndex: 2, textAlign: 'center', padding: '0 28px', animation: 'slideUp 1s both' }}>
         <div style={{ fontSize: 26, color: C.gold, fontFamily: 'serif', marginBottom: 5, opacity: 0.8 }}>ॐ</div>
-        <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 'clamp(11px,2.5vw,13px)', letterSpacing: '0.35em', color: C.rose, textTransform: 'uppercase', marginBottom: 12 }}>We are getting</p>
-        <h1 style={{ fontFamily: "'Playfair Display',serif", fontWeight: 400, fontSize: 'clamp(54px,14vw,96px)', color: C.charcoal, lineHeight: 0.88, margin: 0, animation: 'scaleIn 0.9s 0.1s both' }}>Married</h1>
+        <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 'clamp(13px,3vw,14px)', letterSpacing: '0.35em', color: C.rose, textTransform: 'uppercase', marginBottom: 12 }}>We are getting</p>
+        <h1 style={{ fontFamily: "'Playfair Display',serif", fontWeight: 400, fontSize: 'clamp(64px,14vw,96px)', color: C.charcoal, lineHeight: 0.88, margin: 0, animation: 'scaleIn 0.9s 0.1s both' }}>Married</h1>
         <GoldDivider color={C.gold} />
-        <p style={{ fontFamily: "'Playfair Display',serif", fontWeight: 400, fontSize: 'clamp(20px,5.5vw,30px)', color: C.charcoal, margin: '4px 0 4px' }}>{WD.brideName} <span style={{ color: C.rose, fontStyle: 'italic' }}>&</span> {WD.groomName}</p>
-        <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 'clamp(12px,2.8vw,16px)', color: C.gold, letterSpacing: '0.2em', fontWeight: 600, textTransform: 'uppercase', marginBottom: 22 }}>{WD.weddingDate}</p>
+        <p style={{ fontFamily: "'Playfair Display',serif", fontWeight: 400, fontSize: 'clamp(24px,5.5vw,30px)', color: C.charcoal, margin: '4px 0 4px' }}>{WD.brideName} <span style={{ color: C.rose, fontStyle: 'italic' }}>&</span> {WD.groomName}</p>
+        <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 'clamp(14px,3vw,16px)', color: C.gold, letterSpacing: '0.2em', fontWeight: 600, textTransform: 'uppercase', marginBottom: 22 }}>{WD.weddingDate}</p>
 
         <div>
           <p style={{ fontSize: 9, letterSpacing: '0.28em', color: C.gold, textTransform: 'uppercase', marginBottom: 10 }}>⏳ Celebrations begin in</p>
           <div style={{ display: 'flex', gap: 8, justifyContent: 'center' }}>
             {[{ v: days, l: 'Days' }, { v: hours, l: 'Hrs' }, { v: min, l: 'Min' }, { v: sec, l: 'Sec' }].map(({ v, l }) => (
               <div key={l} style={{ textAlign: 'center', background: 'rgba(255,255,255,0.07)', backdropFilter: 'blur(10px)', borderRadius: 12, padding: '8px 10px', border: `1px solid ${C.gold}30`, minWidth: 50 }}>
-                <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 'clamp(18px,5vw,24px)', color: C.gold, fontWeight: 400, lineHeight: 1 }}>{String(v).padStart(2, '0')}</p>
+                <p style={{ fontFamily: "'Playfair Display',serif", fontSize: 'clamp(20px,5vw,24px)', color: C.gold, fontWeight: 400, lineHeight: 1 }}>{String(v).padStart(2, '0')}</p>
                 <p style={{ fontSize: 8, color: 'rgba(0,0,0,0.35)', letterSpacing: '0.1em', marginTop: 3, textTransform: 'uppercase' }}>{l}</p>
               </div>
             ))}
@@ -504,7 +522,7 @@ const PhotoGallerySlide = () => {
   const rots = ['-5deg', '-2deg', '3deg', '-3deg', '4deg', '-1deg', '5deg'];
 
   return (
-    <div style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden', background: `linear-gradient(160deg,${C.charcoal} 0%,#1A1512 100%)`, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+    <div style={{ position: 'relative', width: '100vw', height: '100dvh', overflow: 'hidden', background: `linear-gradient(160deg,${C.charcoal} 0%,#1A1512 100%)`, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
       <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse 70% 50% at 50% 50%,rgba(201,169,110,0.07) 0%,transparent 70%)`, pointerEvents: 'none' }} />
       <MandalaCorner corner="tr" color={C.goldLight} opacity={0.07} />
       <MandalaCorner corner="bl" color={C.blush} opacity={0.06} />
@@ -558,8 +576,22 @@ const PhotoGallerySlide = () => {
 /* ═══════════════ CELEBRATIONS CARD ══════════════════════════════════════ */
 const CelebrationsCard = ({ onGoToSlide }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [touchY, setTouchY] = useState(0);
+  const [touchX, setTouchX] = useState(0);
+
+  const handleTS = e => { setTouchY(e.touches[0].clientY); setTouchX(e.touches[0].clientX); };
+  const handleTE = e => {
+    const dy = touchY - e.changedTouches[0].clientY;
+    const dx = touchX - e.changedTouches[0].clientX;
+    if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 40) {
+      e.stopPropagation();
+      if (dy > 0 && !isOpen) setIsOpen(true);
+      if (dy < 0 && isOpen) setIsOpen(false);
+    }
+  };
+
   return (
-    <div style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden' }}>
+    <div onTouchStart={handleTS} onTouchEnd={handleTE} style={{ position: 'relative', width: '100vw', height: '100dvh', overflow: 'hidden' }}>
       <img src="/images/celebrations.png" alt="Celebrations" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.55 }} />
       <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at center,rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.78) 100%)' }} />
 
@@ -605,9 +637,9 @@ const CelebrationsCard = ({ onGoToSlide }) => {
       }}>
         <div style={{ textAlign: 'center', padding: '0 32px' }}>
           <div style={{ fontSize: 10, letterSpacing: '0.45em', color: C.gold, marginBottom: 18 }}>✦ ✦ ✦</div>
-          <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 'clamp(13px,3.5vw,17px)', letterSpacing: '0.2em', color: C.goldLight, textTransform: 'uppercase', marginBottom: 6 }}>The</p>
-          <h2 style={{ fontFamily: "'Playfair Display',serif", fontWeight: 300, fontSize: 'clamp(40px,11vw,76px)', color: '#fff', lineHeight: 0.9, margin: '0 0 6px', textShadow: '0 4px 32px rgba(0,0,0,0.5)' }}>Celebrations</h2>
-          <h2 style={{ fontFamily: "'Playfair Display',serif", fontWeight: 300, fontStyle: 'italic', fontSize: 'clamp(40px,11vw,76px)', color: C.gold, lineHeight: 0.9, margin: '0 0 26px' }}>Begin</h2>
+          <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 'clamp(15px,3.5vw,17px)', letterSpacing: '0.2em', color: C.goldLight, textTransform: 'uppercase', marginBottom: 6 }}>The</p>
+          <h2 style={{ fontFamily: "'Playfair Display',serif", fontWeight: 300, fontSize: 'clamp(46px,11vw,76px)', color: '#fff', lineHeight: 0.9, margin: '0 0 6px', textShadow: '0 4px 32px rgba(0,0,0,0.5)' }}>Celebrations</h2>
+          <h2 style={{ fontFamily: "'Playfair Display',serif", fontWeight: 300, fontStyle: 'italic', fontSize: 'clamp(46px,11vw,76px)', color: C.gold, lineHeight: 0.9, margin: '0 0 26px' }}>Begin</h2>
           <GoldDivider color={C.gold} />
           <div style={{ display: 'flex', justifyContent: 'center', gap: 14, marginTop: 16, marginBottom: 26 }}>
             {WD.functions.map(f => (
@@ -618,8 +650,8 @@ const CelebrationsCard = ({ onGoToSlide }) => {
             ))}
           </div>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '11px 28px', borderRadius: 9999, background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(10px)', border: `1px solid ${C.gold}45`, animation: 'pulseGlow 2.5s 1.5s infinite' }}>
-            <span style={{ fontSize: 15 }}>💌</span>
-            <span style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 12, color: C.goldLight, letterSpacing: '0.12em', fontStyle: 'italic' }}>Tap to see all events</span>
+            <span style={{ fontSize: 15 }}>👆</span>
+            <span style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 12, color: C.goldLight, letterSpacing: '0.12em', fontStyle: 'italic' }}>Swipe up for events</span>
           </div>
         </div>
       </div>
@@ -631,7 +663,7 @@ const CelebrationsCard = ({ onGoToSlide }) => {
 const FunctionSlide = ({ fn, isActive }) => {
   const { palette, song, dress, name, date, time, tagline, emoji, image, particles } = fn;
   return (
-    <div style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden', background: `linear-gradient(160deg,${palette.from} 0%,${palette.via} 100%)`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <div style={{ position: 'relative', width: '100vw', height: '100dvh', overflow: 'hidden', background: `linear-gradient(160deg,${palette.from} 0%,${palette.via} 100%)`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <img src={image} alt={name} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', opacity: 0.54 }} />
       <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(to top,${palette.from}f2 0%,${palette.via}88 45%,${palette.from}77 100%)` }} />
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '40%', background: `radial-gradient(ellipse 80% 60% at 50% 0%,${palette.accent}14 0%,transparent 70%)`, pointerEvents: 'none' }} />
@@ -642,10 +674,10 @@ const FunctionSlide = ({ fn, isActive }) => {
       <div style={{ position: 'relative', zIndex: 2, width: '100%', maxWidth: 440, padding: '0 20px', overflowY: 'auto', maxHeight: '94vh' }}>
         <div style={{ textAlign: 'center', marginBottom: 16, animation: 'slideUp 0.7s both' }}>
           <div style={{ fontSize: 42, marginBottom: 6, filter: 'drop-shadow(0 4px 14px rgba(0,0,0,0.5))', animation: 'fnFloat 3s ease-in-out infinite' }}>{emoji}</div>
-          <h2 style={{ fontFamily: "'Playfair Display',serif", fontWeight: 300, fontSize: 'clamp(34px,9vw,50px)', color: '#fff', margin: 0, textShadow: '0 2px 12px rgba(0,0,0,0.5)' }}>{name}</h2>
+          <h2 style={{ fontFamily: "'Playfair Display',serif", fontWeight: 300, fontSize: 'clamp(38px,9vw,50px)', color: '#fff', margin: 0, textShadow: '0 2px 12px rgba(0,0,0,0.5)' }}>{name}</h2>
           <div style={{ height: 2, width: 50, background: palette.accent, margin: '10px auto', borderRadius: 9999, boxShadow: `0 0 12px ${palette.accent}`, animation: `glowPulse 2s ease-in-out infinite` }} />
-          <p style={{ fontSize: 11, color: palette.light, letterSpacing: '0.13em', marginBottom: 3 }}>{date} · {time}</p>
-          <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 15, color: 'rgba(255,255,255,0.68)', fontStyle: 'italic' }}>{tagline}</p>
+          <p style={{ fontSize: 13, color: palette.light, letterSpacing: '0.13em', marginBottom: 3 }}>{date} · {time}</p>
+          <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 16, color: 'rgba(255,255,255,0.68)', fontStyle: 'italic' }}>{tagline}</p>
         </div>
 
         <div style={{ marginBottom: 10, animation: 'slideUp 0.7s 0.15s both' }}>
@@ -763,10 +795,10 @@ const RSVPContent = () => {
         {/* Animated heart */}
         <div style={{ fontSize: 48, marginBottom: 10, animation: 'heartBeat 1.8s ease-in-out infinite' }}>💕</div>
 
-        <h2 style={{ fontFamily: "'Playfair Display',serif", fontWeight: 300, fontSize: 'clamp(26px,8vw,40px)', color: C.ivory, margin: '0 0 5px' }}>
+        <h2 style={{ fontFamily: "'Playfair Display',serif", fontWeight: 300, fontSize: 'clamp(30px,8vw,40px)', color: C.ivory, margin: '0 0 5px' }}>
           We can't wait
         </h2>
-        <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 19, color: '#FF99AA', fontStyle: 'italic', marginBottom: 18 }}>
+        <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 22, color: '#FF99AA', fontStyle: 'italic', marginBottom: 18 }}>
           to celebrate with you
         </p>
 
@@ -937,6 +969,7 @@ const WeddingInvitation = () => {
         @keyframes wSY5{from{transform:scaleY(1)}to{transform:scaleY(1.8)}}
 
         .nav-btn:hover{background:rgba(255,255,255,0.2)!important;transform:scale(1.1)}
+        button, a { touch-action: manipulation; }
         ::-webkit-scrollbar{width:0}
         @media(min-width:768px){.kbd-hint{display:block!important}}
       `}</style>
@@ -946,17 +979,17 @@ const WeddingInvitation = () => {
       )}
 
       <div onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}
-        style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden', background: C.charcoal }}>
+        style={{ position: 'relative', width: '100vw', height: '100dvh', overflow: 'hidden', background: C.charcoal }}>
 
         {/* Slide strip */}
-        <div style={{ display: 'flex', width: `${total * 100}vw`, height: '100vh', transform: `translateX(-${currentSlide * 100}vw)`, transition: 'transform 560ms cubic-bezier(0.4,0,0.2,1)', willChange: 'transform' }}>
+        <div style={{ display: 'flex', width: `${total * 100}vw`, height: '100dvh', transform: `translateX(-${currentSlide * 100}vw)`, transition: 'transform 560ms cubic-bezier(0.4,0,0.2,1)', willChange: 'transform' }}>
           {slides.map((sid, idx) => (
-            <div key={sid} style={{ width: '100vw', height: '100vh', flexShrink: 0 }}>{renderSlide(sid, idx)}</div>
+            <div key={sid} style={{ width: '100vw', height: '100dvh', flexShrink: 0 }}>{renderSlide(sid, idx)}</div>
           ))}
         </div>
 
         {/* Bottom nav */}
-        <div style={{ position: 'fixed', bottom: 22, left: 16, right: 16, zIndex: 50, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ position: 'fixed', bottom: 'calc(22px + env(safe-area-inset-bottom))', left: 16, right: 16, zIndex: 50, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <button className="nav-btn" onClick={() => go(-1)} disabled={currentSlide === 0}
             style={{ padding: 10, borderRadius: '50%', border: 'none', cursor: currentSlide === 0 ? 'not-allowed' : 'pointer', background: navBg, color: navIcon, opacity: currentSlide === 0 ? 0.18 : 1, transition: 'all 0.3s', display: 'flex' }}>
             <ChevronLeft size={20} />
