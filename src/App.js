@@ -263,7 +263,7 @@ const MiniAudioPlayer = ({ song, accent, isActive }) => {
 
   return (
     <div style={{ background: 'rgba(0,0,0,0.48)', backdropFilter: 'blur(18px)', borderRadius: 14, padding: '10px 14px', border: `1px solid ${accent}35` }}>
-      <audio key={song.url} ref={audioRef} preload="auto"
+      <audio key={song.url} ref={audioRef} preload="metadata"
         onTimeUpdate={e => setProgress(e.target.currentTime)}
         onLoadedMetadata={e => setDuration(e.target.duration)}
         onError={(e) => { setError(true); setPlaying(false); setErrDetail('Network Error code: ' + (e.target.error?.code || 'unknown')); }}
@@ -393,6 +393,7 @@ const SplashScreen = ({ onEnter, isExiting }) => {
       <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(160deg,${C.ivory} 0%,${C.cream} 40%,${C.petal} 70%,${C.blush} 100%)` }}>
         <img
           src={COUPLE_PHOTO} alt="Skandha & Mehul"
+          fetchPriority="high"
           onLoad={() => setPhotoLoaded(true)}
           onError={() => setPhotoLoaded(false)}
           style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top', display: photoLoaded ? 'block' : 'none' }}
@@ -482,7 +483,10 @@ const PhotoGallerySlide = () => {
   const scrollX = useRef(0); const rafId = useRef(null);
   // Track which gallery slots loaded successfully
   const [loaded, setLoaded] = useState(Array(GALLERY_PATHS.length).fill(false));
+  const [shouldPreload, setShouldPreload] = useState(false);
   const markLoaded = useCallback((i) => setLoaded(p => { const n = [...p]; n[i] = true; return n; }), []);
+
+  useEffect(() => { const t = setTimeout(() => setShouldPreload(true), 2500); return () => clearTimeout(t); }, []);
 
   const ITEM_W = 155; const GAP = 12;
   const validPaths = GALLERY_PATHS.filter((_, i) => loaded[i]);
@@ -512,11 +516,13 @@ const PhotoGallerySlide = () => {
         </div>
 
         {/* Hidden preload images so we know which ones exist */}
-        <div style={{ display: 'none' }}>
-          {GALLERY_PATHS.map((src, i) => (
-            <img key={i} src={src} onLoad={() => markLoaded(i)} onError={() => { }} alt="" />
-          ))}
-        </div>
+        {shouldPreload && (
+          <div style={{ display: 'none' }}>
+            {GALLERY_PATHS.map((src, i) => (
+              <img key={i} src={src} onLoad={() => markLoaded(i)} onError={() => { }} alt="" />
+            ))}
+          </div>
+        )}
 
         <div style={{ overflow: 'hidden', paddingBottom: 18 }}
           onMouseEnter={() => cancelAnimationFrame(rafId.current)}
@@ -534,7 +540,7 @@ const PhotoGallerySlide = () => {
                   transition: 'opacity 0.4s',
                   background: `linear-gradient(135deg,${C.charcoal},${C.warmGray}44)`,
                 }}>
-                  <img src={src} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <img src={shouldPreload || isVisible ? src : ''} alt="" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
               );
             })}
