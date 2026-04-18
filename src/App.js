@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { ChevronRight, ChevronLeft, ChevronUp, ChevronDown, MapPin, Phone, MessageCircle, X, Heart, Play, Pause, Music } from 'lucide-react';
+import { ChevronRight, ChevronUp, ChevronDown, MapPin, Phone, MessageCircle, X, Heart, Play, Pause, Music } from 'lucide-react';
 
 import { getImageUrl } from './supabase';
 
