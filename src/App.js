@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { ChevronRight, ChevronLeft, MapPin, Phone, MessageCircle, X, Heart, Play, Pause, Music } from 'lucide-react';
+import { ChevronRight, ChevronLeft, ChevronUp, ChevronDown, MapPin, Phone, MessageCircle, X, Heart, Play, Pause, Music } from 'lucide-react';
 
 import { getImageUrl } from './supabase';
 
@@ -335,22 +335,9 @@ const DressThemeCard = ({ dress, accent }) => (
 /* ═══════════════ CARD WRAPPER ════════════════════════════════════════════ */
 const CardSlide = ({ sectionIcon, sectionName, accentColor = C.rose, petalColors, children }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [touchY, setTouchY] = useState(0);
-  const [touchX, setTouchX] = useState(0);
-
-  const handleTS = e => { setTouchY(e.touches[0].clientY); setTouchX(e.touches[0].clientX); };
-  const handleTE = e => {
-    const dy = touchY - e.changedTouches[0].clientY;
-    const dx = touchX - e.changedTouches[0].clientX;
-    if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 40) {
-      e.stopPropagation();
-      if (dy > 0 && !isOpen) setIsOpen(true);
-      if (dy < 0 && isOpen) setIsOpen(false);
-    }
-  };
 
   return (
-    <div onTouchStart={handleTS} onTouchEnd={handleTE} style={{ position: 'relative', width: '100vw', height: '100dvh', overflow: 'hidden' }}>
+    <div style={{ position: 'relative', width: '100vw', height: '100dvh', overflow: 'hidden' }}>
       {/* Content */}
       <div style={{
         position: 'absolute', inset: 0,
@@ -388,7 +375,7 @@ const CardSlide = ({ sectionIcon, sectionName, accentColor = C.rose, petalColors
           <h2 style={{ fontFamily: "'Playfair Display',serif", fontWeight: 300, fontStyle: 'italic', fontSize: 'clamp(32px,8vw,42px)', color: C.charcoal, marginBottom: 26 }}>{sectionName}</h2>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '11px 26px', borderRadius: 9999, background: `${accentColor}18`, border: `1px solid ${accentColor}40` }}>
             <span style={{ fontSize: 16 }}>👆</span>
-            <span style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 13, color: accentColor, letterSpacing: '0.1em', fontStyle: 'italic' }}>Tap or Swipe up</span>
+            <span style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 13, color: accentColor, letterSpacing: '0.1em', fontStyle: 'italic' }}>Tap to open</span>
           </div>
         </div>
       </div>
@@ -576,22 +563,9 @@ const PhotoGallerySlide = () => {
 /* ═══════════════ CELEBRATIONS CARD ══════════════════════════════════════ */
 const CelebrationsCard = ({ onGoToSlide }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [touchY, setTouchY] = useState(0);
-  const [touchX, setTouchX] = useState(0);
-
-  const handleTS = e => { setTouchY(e.touches[0].clientY); setTouchX(e.touches[0].clientX); };
-  const handleTE = e => {
-    const dy = touchY - e.changedTouches[0].clientY;
-    const dx = touchX - e.changedTouches[0].clientX;
-    if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 40) {
-      e.stopPropagation();
-      if (dy > 0 && !isOpen) setIsOpen(true);
-      if (dy < 0 && isOpen) setIsOpen(false);
-    }
-  };
 
   return (
-    <div onTouchStart={handleTS} onTouchEnd={handleTE} style={{ position: 'relative', width: '100vw', height: '100dvh', overflow: 'hidden' }}>
+    <div style={{ position: 'relative', width: '100vw', height: '100dvh', overflow: 'hidden' }}>
       <img src="/images/celebrations.png" alt="Celebrations" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.55 }} />
       <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at center,rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.78) 100%)' }} />
 
@@ -651,7 +625,7 @@ const CelebrationsCard = ({ onGoToSlide }) => {
           </div>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '11px 28px', borderRadius: 9999, background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(10px)', border: `1px solid ${C.gold}45`, animation: 'pulseGlow 2.5s 1.5s infinite' }}>
             <span style={{ fontSize: 15 }}>👆</span>
-            <span style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 12, color: C.goldLight, letterSpacing: '0.12em', fontStyle: 'italic' }}>Swipe up for events</span>
+            <span style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 12, color: C.goldLight, letterSpacing: '0.12em', fontStyle: 'italic' }}>Tap for events</span>
           </div>
         </div>
       </div>
@@ -671,7 +645,10 @@ const FunctionSlide = ({ fn, isActive }) => {
       {/* Rising particles for each function */}
       <FnParticles particles={particles} />
 
-      <div style={{ position: 'relative', zIndex: 2, width: '100%', maxWidth: 440, padding: '0 20px', overflowY: 'auto', maxHeight: '94vh' }}>
+      <div 
+        onTouchStart={e => { if (e.currentTarget.scrollHeight > e.currentTarget.clientHeight) e.stopPropagation(); }}
+        onTouchEnd={e => { if (e.currentTarget.scrollHeight > e.currentTarget.clientHeight) e.stopPropagation(); }}
+        style={{ position: 'relative', zIndex: 2, width: '100%', maxWidth: 440, padding: '0 20px', overflowY: 'auto', maxHeight: '94vh' }}>
         <div style={{ textAlign: 'center', marginBottom: 16, animation: 'slideUp 0.7s both' }}>
           <div style={{ fontSize: 42, marginBottom: 6, filter: 'drop-shadow(0 4px 14px rgba(0,0,0,0.5))', animation: 'fnFloat 3s ease-in-out infinite' }}>{emoji}</div>
           <h2 style={{ fontFamily: "'Playfair Display',serif", fontWeight: 300, fontSize: 'clamp(38px,9vw,50px)', color: '#fff', margin: 0, textShadow: '0 2px 12px rgba(0,0,0,0.5)' }}>{name}</h2>
@@ -894,28 +871,32 @@ const Lightbox = ({ src, name, onClose }) => {
 
 /* ═══════════════════════════ MAIN APP ════════════════════════════════════ */
 const WeddingInvitation = () => {
+  const scrollRef = useRef(null);
   const [showSplash, setShowSplash] = useState(true);
   const [isExiting, setIsExiting] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [touchStart, setTouchStart] = useState(0);
   const [lightbox, setLightbox] = useState(null);
   const slides = React.useMemo(() => ['cover', 'gallery', 'celebrations', ...WD.functions.map(f => f.id), 'venue', 'family', 'rsvp'], []);
   const total = slides.length;
 
   const handleEnter = () => { setIsExiting(true); setTimeout(() => setShowSplash(false), 900); };
 
+  const scrollToSlideIndex = useCallback((idx) => {
+    if (scrollRef.current) scrollRef.current.scrollTo({ top: idx * window.innerHeight, behavior: 'smooth' });
+  }, []);
+
   const go = useCallback((dir) => {
-    setCurrentSlide(s => Math.max(0, Math.min(total - 1, s + dir)));
-  }, [total]);
+    scrollToSlideIndex(Math.max(0, Math.min(total - 1, currentSlide + dir)));
+  }, [total, currentSlide, scrollToSlideIndex]);
 
   const goToSlide = useCallback((slideId) => {
-    const idx = slides.indexOf(slideId); if (idx !== -1) setCurrentSlide(idx);
-  }, [slides]);
+    const idx = slides.indexOf(slideId); if (idx !== -1) scrollToSlideIndex(idx);
+  }, [slides, scrollToSlideIndex]);
 
-  const handleTouchStart = e => setTouchStart(e.touches[0].clientX);
-  const handleTouchEnd = e => { const d = touchStart - e.changedTouches[0].clientX; if (Math.abs(d) > 50) go(d > 0 ? 1 : -1); };
-
-  useEffect(() => { const h = e => { if (e.key === 'ArrowRight') go(1); if (e.key === 'ArrowLeft') go(-1); }; window.addEventListener('keydown', h); return () => window.removeEventListener('keydown', h); }, [go]);
+  const handleScroll = (e) => {
+    const idx = Math.round(e.currentTarget.scrollTop / window.innerHeight);
+    if (idx !== currentSlide) setCurrentSlide(idx);
+  };
 
   const darkSlides = [...WD.functions.map(f => f.id), 'family', 'gallery', 'celebrations', 'venue', 'rsvp'];
   const isDark = darkSlides.includes(slides[currentSlide]);
@@ -978,13 +959,12 @@ const WeddingInvitation = () => {
         <SplashScreen onEnter={handleEnter} isExiting={isExiting} />
       )}
 
-      <div onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}
-        style={{ position: 'relative', width: '100vw', height: '100dvh', overflow: 'hidden', background: C.charcoal }}>
+      <div style={{ position: 'relative', width: '100vw', height: '100dvh', overflow: 'hidden', background: C.charcoal }}>
 
         {/* Slide strip */}
-        <div style={{ display: 'flex', width: `${total * 100}vw`, height: '100dvh', transform: `translateX(-${currentSlide * 100}vw)`, transition: 'transform 560ms cubic-bezier(0.4,0,0.2,1)', willChange: 'transform' }}>
+        <div ref={scrollRef} onScroll={handleScroll} style={{ display: 'flex', flexDirection: 'column', width: '100vw', height: '100dvh', overflowY: 'auto', scrollSnapType: 'y mandatory', scrollBehavior: 'smooth' }}>
           {slides.map((sid, idx) => (
-            <div key={sid} style={{ width: '100vw', height: '100dvh', flexShrink: 0 }}>{renderSlide(sid, idx)}</div>
+            <div key={sid} style={{ width: '100vw', height: '100dvh', flexShrink: 0, scrollSnapAlign: 'start', position: 'relative' }}>{renderSlide(sid, idx)}</div>
           ))}
         </div>
 
@@ -992,13 +972,13 @@ const WeddingInvitation = () => {
         <div style={{ position: 'fixed', bottom: 'calc(22px + env(safe-area-inset-bottom))', left: 16, right: 16, zIndex: 50, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <button className="nav-btn" onClick={() => go(-1)} disabled={currentSlide === 0}
             style={{ padding: 10, borderRadius: '50%', border: 'none', cursor: currentSlide === 0 ? 'not-allowed' : 'pointer', background: navBg, color: navIcon, opacity: currentSlide === 0 ? 0.18 : 1, transition: 'all 0.3s', display: 'flex' }}>
-            <ChevronLeft size={20} />
+            <ChevronUp size={20} />
           </button>
 
           {/* Emoji nav */}
           <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
             {slides.map((sid, i) => (
-              <button key={i} onClick={() => setCurrentSlide(i)} style={{
+              <button key={i} onClick={() => scrollToSlideIndex(i)} style={{
                 border: 'none', background: 'transparent', cursor: 'pointer', padding: '2px 1px',
                 fontSize: i === currentSlide ? '14px' : '8px', opacity: i === currentSlide ? 1 : 0.3,
                 transition: 'all 0.35s ease', lineHeight: 1, filter: i === currentSlide ? 'none' : 'grayscale(1)',
@@ -1010,7 +990,7 @@ const WeddingInvitation = () => {
 
           <button className="nav-btn" onClick={() => go(1)} disabled={currentSlide === total - 1}
             style={{ padding: 10, borderRadius: '50%', border: 'none', cursor: currentSlide === total - 1 ? 'not-allowed' : 'pointer', background: navBg, color: navIcon, opacity: currentSlide === total - 1 ? 0.18 : 1, transition: 'all 0.3s', display: 'flex' }}>
-            <ChevronRight size={20} />
+            <ChevronDown size={20} />
           </button>
         </div>
 
@@ -1027,7 +1007,7 @@ const WeddingInvitation = () => {
         )}
 
         <div className="kbd-hint" style={{ position: 'fixed', top: 26, left: 16, zIndex: 50, fontSize: 9, color: navIcon, opacity: 0.3, letterSpacing: '0.1em', display: 'none' }}>
-          ← → arrow keys
+          ↑ ↓ arrow keys
         </div>
       </div>
 
