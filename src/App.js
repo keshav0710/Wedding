@@ -53,7 +53,7 @@ const WD = {
     },
     {
       id: 'mayara', name: 'Mayara', date: 'June 26, 2026', time: '10:00 AM', emoji: '🪔',
-      tagline: 'Sacred Gujarati rituals with family blessings',
+      tagline: 'Sacred Rajasthani rituals with family blessings',
       image: '/images/mayara.png',
       palette: { from: '#240800', via: '#3E1000', accent: '#F08030', light: '#FFF0E4' },
       song: { title: 'Choudhary', url: '/songs/mayara.mp3' },
@@ -645,7 +645,7 @@ const FunctionSlide = ({ fn, isActive }) => {
       {/* Rising particles for each function */}
       <FnParticles particles={particles} />
 
-      <div 
+      <div
         onTouchStart={e => { if (e.currentTarget.scrollHeight > e.currentTarget.clientHeight) e.stopPropagation(); }}
         onTouchEnd={e => { if (e.currentTarget.scrollHeight > e.currentTarget.clientHeight) e.stopPropagation(); }}
         style={{ position: 'relative', zIndex: 2, width: '100%', maxWidth: 440, padding: '0 20px', overflowY: 'auto', maxHeight: '94vh' }}>
