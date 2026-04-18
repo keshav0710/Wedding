@@ -506,7 +506,6 @@ const PhotoGallerySlide = ({ onPhotoClick }) => {
   useEffect(() => { const t = setTimeout(() => setShouldPreload(true), 2500); return () => clearTimeout(t); }, []);
 
   const ITEM_W = 155; const GAP = 12;
-  const validPaths = GALLERY_PATHS.filter((_, i) => loaded[i]);
   const items = [...GALLERY_PATHS, ...GALLERY_PATHS, ...GALLERY_PATHS];
   const singleW = GALLERY_PATHS.length * (ITEM_W + GAP);
 
