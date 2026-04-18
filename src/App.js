@@ -53,7 +53,7 @@ const WD = {
     },
     {
       id: 'mayara', name: 'Mayara', date: 'June 26, 2026', time: '10:00 AM', emoji: '🪔',
-      tagline: 'Sacred Gujarati rituals with family blessings',
+      tagline: 'Sacred Rajasthani rituals with family blessings',
       image: '/images/mayara.png',
       palette: { from: '#240800', via: '#3E1000', accent: '#F08030', light: '#FFF0E4' },
       song: { title: 'Choudhary', url: '/songs/mayara.mp3' },
@@ -212,7 +212,7 @@ const WaveProgressBar = ({ pct, accent, playing, onSeek }) => (
 );
 
 /* ═══════════════ MINI AUDIO PLAYER (Slim + Wave) ═════════════════════════ */
-const MiniAudioPlayer = ({ song, accent, isActive }) => {
+const MiniAudioPlayer = React.forwardRef(({ song, accent, isActive }, ref) => {
   const audioRef = useRef(null);
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -220,18 +220,28 @@ const MiniAudioPlayer = ({ song, accent, isActive }) => {
   const [error, setError] = useState(false);
   const [errDetail, setErrDetail] = useState('');
 
+  React.useImperativeHandle(ref, () => ({
+    play: () => {
+      if (audioRef.current) {
+        audioRef.current.play().then(() => setPlaying(true)).catch(e => {
+          setPlaying(false);
+          // Show polite error for blocked autoplay, not ugly exception msg
+          setError(true); setErrDetail('Tap play to listen');
+        });
+      }
+    },
+    pause: () => {
+      audioRef.current?.pause(); setPlaying(false);
+    }
+  }));
+
   useEffect(() => {
-    if (isActive && audioRef.current) {
-      audioRef.current.play().then(() => setPlaying(true)).catch(e => {
-        setPlaying(false);
-        setError(true);
-        setErrDetail('Auto-play blocked: ' + e.message);
-      });
-    } else if (!isActive && audioRef.current) {
+    if (isActive === false && audioRef.current) {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
       setPlaying(false);
     }
+    // Mobile relies on ref.play() handling the direct touch action.
   }, [isActive]);
 
   const toggle = async () => {
@@ -315,7 +325,7 @@ const MiniAudioPlayer = ({ song, accent, isActive }) => {
       )}
     </div>
   );
-};
+});
 
 /* Dress card */
 const DressThemeCard = ({ dress, accent }) => (
@@ -483,10 +493,12 @@ const CoverSlide = ({ currentSlide, totalSlides }) => {
 };
 
 /* ═══════════════ PHOTO GALLERY (true infinite via RAF) ═══════════════════ */
-const PhotoGallerySlide = () => {
+const PhotoGallerySlide = ({ onPhotoClick }) => {
+  const [isOpen, setIsOpen] = useState(false);
   const trackRef = useRef();
-  const scrollX = useRef(0); const rafId = useRef(null);
-  // Track which gallery slots loaded successfully
+  const scrollX = useRef(0); 
+  const rafId = useRef(null);
+  
   const [loaded, setLoaded] = useState(Array(GALLERY_PATHS.length).fill(false));
   const [shouldPreload, setShouldPreload] = useState(false);
   const markLoaded = useCallback((i) => setLoaded(p => { const n = [...p]; n[i] = true; return n; }), []);
@@ -494,67 +506,109 @@ const PhotoGallerySlide = () => {
   useEffect(() => { const t = setTimeout(() => setShouldPreload(true), 2500); return () => clearTimeout(t); }, []);
 
   const ITEM_W = 155; const GAP = 12;
-  const validPaths = GALLERY_PATHS.filter((_, i) => loaded[i]);
-  // For scroll: always use full path list (images hidden via opacity if loading)
   const items = [...GALLERY_PATHS, ...GALLERY_PATHS, ...GALLERY_PATHS];
   const singleW = GALLERY_PATHS.length * (ITEM_W + GAP);
 
   const startRAF = useCallback(() => {
+    if (isOpen) { cancelAnimationFrame(rafId.current); return; }
     const step = () => { scrollX.current += 2.0; if (scrollX.current >= singleW) scrollX.current = 0; if (trackRef.current) trackRef.current.style.transform = `translateX(-${scrollX.current}px)`; rafId.current = requestAnimationFrame(step); };
     rafId.current = requestAnimationFrame(step);
-  }, [singleW]);
+  }, [singleW, isOpen]);
 
   useEffect(() => { startRAF(); return () => cancelAnimationFrame(rafId.current); }, [startRAF]);
 
-  const rots = ['-5deg', '-2deg', '3deg', '-3deg', '4deg', '-1deg', '5deg'];
+  const rotsScrap = ['-8deg', '6deg', '-4deg', '7deg', '-6deg', '3deg', '-9deg', '5deg', '-3deg', '8deg'];
+  const marginsScrap = ['10px 5px', '25px 15px 5px', '5px 20px', '30px 5px 15px', '15px 10px', '5px 5px 25px'];
+  const sizesScrap = ['120px', '140px', '160px', '130px', '150px'];
+  const rotsScroll = ['-5deg', '-2deg', '3deg', '-3deg', '4deg', '-1deg', '5deg'];
+
+  if (!isOpen) {
+    return (
+      <div style={{ position: 'relative', width: '100vw', height: '100dvh', overflow: 'hidden', background: `linear-gradient(160deg,${C.charcoal} 0%,#1A1512 100%)`, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse 70% 50% at 50% 50%,rgba(201,169,110,0.07) 0%,transparent 70%)`, pointerEvents: 'none' }} />
+        <MandalaCorner corner="tr" color={C.goldLight} opacity={0.07} />
+        <MandalaCorner corner="bl" color={C.blush} opacity={0.06} />
+
+        <div style={{ position: 'relative', zIndex: 2, width: '100%' }}>
+          <div style={{ textAlign: 'center', marginBottom: 26 }}>
+            <p style={{ fontSize: 9, letterSpacing: '0.3em', color: C.gold, textTransform: 'uppercase', marginBottom: 5 }}>{WD.brideName} & {WD.groomName}</p>
+            <h2 style={{ fontFamily: "'Playfair Display',serif", fontWeight: 300, fontStyle: 'italic', fontSize: 'clamp(22px,6vw,32px)', color: C.ivory }}>Our Moments</h2>
+          </div>
+
+          {shouldPreload && (
+            <div style={{ display: 'none' }}>
+              {GALLERY_PATHS.map((src, i) => (
+                <img key={i} src={src} onLoad={() => markLoaded(i)} onError={() => { }} alt="" />
+              ))}
+            </div>
+          )}
+
+          <div style={{ overflow: 'hidden', paddingBottom: 18, cursor: 'pointer' }}
+            onClick={() => setIsOpen(true)}
+            onMouseEnter={() => cancelAnimationFrame(rafId.current)}
+            onMouseLeave={startRAF}>
+            <div ref={trackRef} style={{ display: 'flex', gap: `${GAP}px`, paddingLeft: 20, width: `${items.length * (ITEM_W + GAP)}px` }}>
+              {items.map((src, i) => {
+                const dataIdx = i % GALLERY_PATHS.length;
+                const isVisible = loaded[dataIdx];
+                return (
+                  <div key={i} style={{
+                    width: ITEM_W, height: 200, flexShrink: 0, borderRadius: 18, overflow: 'hidden',
+                    boxShadow: '0 14px 40px rgba(0,0,0,0.55)', border: `1.5px solid ${C.gold}28`,
+                    transform: `rotate(${rotsScroll[i % rotsScroll.length]})`,
+                    opacity: isVisible ? 1 : 0,
+                    transition: 'opacity 0.4s',
+                    background: `linear-gradient(135deg,${C.charcoal},${C.warmGray}44)`,
+                  }}>
+                    <img src={shouldPreload || isVisible ? src : ''} alt="" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <p style={{ fontSize: 9, color: 'rgba(255,255,255,0.3)', marginTop: 6, letterSpacing: '0.08em', textAlign: 'center', animation: 'pulseGlow 2.5s infinite' }}>
+            tap to open collage
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div style={{ position: 'relative', width: '100vw', height: '100dvh', overflow: 'hidden', background: `linear-gradient(160deg,${C.charcoal} 0%,#1A1512 100%)`, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-      <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(ellipse 70% 50% at 50% 50%,rgba(201,169,110,0.07) 0%,transparent 70%)`, pointerEvents: 'none' }} />
-      <MandalaCorner corner="tr" color={C.goldLight} opacity={0.07} />
-      <MandalaCorner corner="bl" color={C.blush} opacity={0.06} />
-
-      <div style={{ position: 'relative', zIndex: 2, width: '100%' }}>
-        <div style={{ textAlign: 'center', marginBottom: 26 }}>
-          <p style={{ fontSize: 9, letterSpacing: '0.3em', color: C.gold, textTransform: 'uppercase', marginBottom: 5 }}>{WD.brideName} & {WD.groomName}</p>
-          <h2 style={{ fontFamily: "'Playfair Display',serif", fontWeight: 300, fontStyle: 'italic', fontSize: 'clamp(22px,6vw,32px)', color: C.ivory }}>Our Moments</h2>
+    <div style={{ position: 'relative', width: '100vw', height: '100dvh', backgroundColor: C.charcoal, overflow: 'hidden' }}>
+      <div 
+        onTouchStart={e => e.stopPropagation()} 
+        onTouchEnd={e => e.stopPropagation()} 
+        style={{ width: '100%', height: '100%', overflowY: 'auto', padding: '80px 10px 40px', scrollBehavior: 'smooth' }}
+      >
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', alignContent: 'center', gap: '8px' }}>
+          {GALLERY_PATHS.map((src, i) => (
+            <div key={i} onClick={() => onPhotoClick(src)} style={{
+              width: sizesScrap[i % sizesScrap.length],
+              height: sizesScrap[(i + 2) % sizesScrap.length],
+              margin: marginsScrap[i % marginsScrap.length],
+              transform: `rotate(${rotsScrap[i % rotsScrap.length]})`,
+              borderRadius: 8, overflow: 'hidden', cursor: 'pointer',
+              border: `5px solid ${C.ivory}`,
+              boxShadow: '0 12px 24px rgba(0,0,0,0.6)',
+              background: `linear-gradient(135deg,${C.charcoal},${C.warmGray}44)`,
+              transition: 'transform 0.3s'
+            }}>
+               <img src={src} onLoad={() => markLoaded(i)} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: loaded[i] ? 1 : 0, transition: 'opacity 0.6s' }} alt="" loading="lazy" />
+            </div>
+          ))}
         </div>
-
-        {/* Hidden preload images so we know which ones exist */}
-        {shouldPreload && (
-          <div style={{ display: 'none' }}>
-            {GALLERY_PATHS.map((src, i) => (
-              <img key={i} src={src} onLoad={() => markLoaded(i)} onError={() => { }} alt="" />
-            ))}
-          </div>
-        )}
-
-        <div style={{ overflow: 'hidden', paddingBottom: 18 }}
-          onMouseEnter={() => cancelAnimationFrame(rafId.current)}
-          onMouseLeave={startRAF}>
-          <div ref={trackRef} style={{ display: 'flex', gap: `${GAP}px`, paddingLeft: 20, width: `${items.length * (ITEM_W + GAP)}px` }}>
-            {items.map((src, i) => {
-              const dataIdx = i % GALLERY_PATHS.length;
-              const isVisible = loaded[dataIdx];
-              return (
-                <div key={i} style={{
-                  width: ITEM_W, height: 200, flexShrink: 0, borderRadius: 18, overflow: 'hidden',
-                  boxShadow: '0 14px 40px rgba(0,0,0,0.55)', border: `1.5px solid ${C.gold}28`,
-                  transform: `rotate(${rots[i % rots.length]})`,
-                  opacity: isVisible ? 1 : 0,
-                  transition: 'opacity 0.4s',
-                  background: `linear-gradient(135deg,${C.charcoal},${C.warmGray}44)`,
-                }}>
-                  <img src={shouldPreload || isVisible ? src : ''} alt="" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        <p style={{ fontSize: 9, color: 'rgba(255,255,255,0.3)', marginTop: 6, letterSpacing: '0.08em', textAlign: 'center' }}>
-          {validPaths.length} / {GALLERY_PATHS.length} moments · hover to pause
-        </p>
+      </div>
+      
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, padding: '16px', background: 'linear-gradient(to bottom, rgba(45,41,38,0.95), transparent)', zIndex: 10, display: 'flex', justifyContent: 'flex-end', pointerEvents: 'none' }}>
+        <button onClick={() => setIsOpen(false)} style={{
+          width: 44, height: 44, borderRadius: '50%', background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(10px)',
+          border: `1px solid ${C.gold}44`, color: C.gold, fontSize: 18,
+          display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', pointerEvents: 'all'
+        }}>
+          ✕
+        </button>
       </div>
     </div>
   );
@@ -636,31 +690,55 @@ const CelebrationsCard = ({ onGoToSlide }) => {
 /* ═══════════════ FUNCTION SLIDE (with FnParticles) ══════════════════════ */
 const FunctionSlide = ({ fn, isActive }) => {
   const { palette, song, dress, name, date, time, tagline, emoji, image, particles } = fn;
+  const [unveiled, setUnveiled] = useState(false);
+  const playerRef = useRef(null);
+
+  useEffect(() => {
+    if (!isActive) {
+      setUnveiled(false);
+    } else {
+      const t = setTimeout(() => {
+        setUnveiled(true);
+        if (playerRef.current) playerRef.current.play();
+      }, 500); // 500ms delay to let the snappy scroll finish before un-blurring & playing
+      return () => clearTimeout(t);
+    }
+  }, [isActive]);
+
   return (
     <div style={{ position: 'relative', width: '100vw', height: '100dvh', overflow: 'hidden', background: `linear-gradient(160deg,${palette.from} 0%,${palette.via} 100%)`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <img src={image} alt={name} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', opacity: 0.54 }} />
+      <img src={image} alt={name} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', opacity: unveiled ? 0.54 : 0.0, transition: 'all 1.8s ease', filter: unveiled ? 'blur(0px)' : 'blur(20px)', transform: unveiled ? 'scale(1)' : 'scale(1.1)' }} />
       <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(to top,${palette.from}f2 0%,${palette.via}88 45%,${palette.from}77 100%)` }} />
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '40%', background: `radial-gradient(ellipse 80% 60% at 50% 0%,${palette.accent}14 0%,transparent 70%)`, pointerEvents: 'none' }} />
 
       {/* Rising particles for each function */}
       <FnParticles particles={particles} />
 
+      {!unveiled && (
+        <div style={{ position: 'absolute', inset: 0, zIndex: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '0 24px', animation: 'fadeOut 0.5s 0.3s forwards' }}>
+          <div style={{ fontSize: 54, marginBottom: 16, filter: `drop-shadow(0 0 16px ${palette.accent}70)`, animation: 'fnFloat 3s ease-in-out infinite' }}>{emoji}</div>
+          <h2 style={{ fontFamily: "'Playfair Display',serif", fontWeight: 300, fontSize: 'clamp(38px,9vw,50px)', color: '#fff', textShadow: `0 4px 20px rgba(0,0,0,0.8)` }}>{name}</h2>
+          <div style={{ marginTop: 24, padding: 10, animation: 'pulseGlow 1.5s infinite', borderRadius: '50%' }}>✨</div>
+        </div>
+      )}
+
       <div 
         onTouchStart={e => { if (e.currentTarget.scrollHeight > e.currentTarget.clientHeight) e.stopPropagation(); }}
         onTouchEnd={e => { if (e.currentTarget.scrollHeight > e.currentTarget.clientHeight) e.stopPropagation(); }}
-        style={{ position: 'relative', zIndex: 2, width: '100%', maxWidth: 440, padding: '0 20px', overflowY: 'auto', maxHeight: '94vh' }}>
-        <div style={{ textAlign: 'center', marginBottom: 16, animation: 'slideUp 0.7s both' }}>
-          <div style={{ fontSize: 42, marginBottom: 6, filter: 'drop-shadow(0 4px 14px rgba(0,0,0,0.5))', animation: 'fnFloat 3s ease-in-out infinite' }}>{emoji}</div>
+        style={{ position: 'relative', zIndex: 2, width: '100%', maxWidth: 440, padding: '0 20px', overflowY: 'auto', maxHeight: '94vh',
+                 opacity: unveiled ? 1 : 0, transform: unveiled ? 'translateY(0)' : 'translateY(40px)', transition: 'all 0.9s cubic-bezier(0.16, 1, 0.3, 1)', pointerEvents: unveiled ? 'all' : 'none' }}>
+        <div style={{ textAlign: 'center', marginBottom: 16 }}>
+          <div style={{ fontSize: 42, marginBottom: 6, filter: 'drop-shadow(0 4px 14px rgba(0,0,0,0.5))', animation: unveiled ? 'fnFloat 3s ease-in-out infinite' : 'none' }}>{emoji}</div>
           <h2 style={{ fontFamily: "'Playfair Display',serif", fontWeight: 300, fontSize: 'clamp(38px,9vw,50px)', color: '#fff', margin: 0, textShadow: '0 2px 12px rgba(0,0,0,0.5)' }}>{name}</h2>
           <div style={{ height: 2, width: 50, background: palette.accent, margin: '10px auto', borderRadius: 9999, boxShadow: `0 0 12px ${palette.accent}`, animation: `glowPulse 2s ease-in-out infinite` }} />
           <p style={{ fontSize: 13, color: palette.light, letterSpacing: '0.13em', marginBottom: 3 }}>{date} · {time}</p>
           <p style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 16, color: 'rgba(255,255,255,0.68)', fontStyle: 'italic' }}>{tagline}</p>
         </div>
 
-        <div style={{ marginBottom: 10, animation: 'slideUp 0.7s 0.15s both' }}>
-          <MiniAudioPlayer song={song} accent={palette.accent} isActive={isActive} />
+        <div style={{ marginBottom: 10 }}>
+          <MiniAudioPlayer ref={playerRef} song={song} accent={palette.accent} isActive={unveiled && isActive} />
         </div>
-        <div style={{ animation: 'slideUp 0.7s 0.28s both' }}>
+        <div>
           <DressThemeCard dress={dress} accent={palette.accent} />
         </div>
       </div>
@@ -909,7 +987,7 @@ const WeddingInvitation = () => {
     if (fn) return <FunctionSlide fn={fn} isActive={idx === currentSlide} />;
     switch (sid) {
       case 'cover': return <CoverSlide currentSlide={currentSlide} totalSlides={total} />;
-      case 'gallery': return <PhotoGallerySlide />;
+      case 'gallery': return <PhotoGallerySlide onPhotoClick={(src) => setLightbox({ src, name: 'Memory' })} />;
       case 'celebrations': return <CelebrationsCard onGoToSlide={goToSlide} />;
       case 'venue':
         return <CardSlide sectionIcon="🏰" sectionName="Venue" accentColor={C.goldDeep} petalColors={[C.gold, C.goldLight, '#D4A853']}><VenueContent /></CardSlide>;
